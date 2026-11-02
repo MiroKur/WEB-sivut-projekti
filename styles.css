@@ -38,7 +38,6 @@
   --white: #fff;
   --line: #dedede;
   --content: 1200px;
-  --space: 24px;
 }
 * {
   box-sizing: border-box;
@@ -139,7 +138,9 @@ a:hover {
 }
 .skip-link {
   position: fixed;
-  top: -100px;
+  top: 10px;
+  opacity: 0;
+  pointer-events: none;
   left: 20px;
   background: var(--ink);
   color: white;
@@ -147,7 +148,8 @@ a:hover {
   padding: 12px;
 }
 .skip-link:focus {
-  top: 10px;
+  opacity: 1;
+  pointer-events: auto;
 }
 /* Header ja navigaatio */
 .site-header {
@@ -215,8 +217,6 @@ a:hover {
   width: 58%;
   aspect-ratio: 1160 / 1024;
   overflow: hidden;
-  object-fit: contain;
-  object-position: bottom;
   mix-blend-mode: multiply;
 }
 .hero-rail {
@@ -361,8 +361,10 @@ a:hover {
   background: #202020;
   color: white;
   border-radius: 50%;
-  width: 52px;
-  height: 52px;
+  width: var(--arrow-size);
+  aspect-ratio: 1;
+  border: 0;
+  transition: background-color 0.2s ease;
   flex-shrink: 0;
   font-size: 24px;
 }
@@ -626,6 +628,7 @@ a:hover {
   font-size: clamp(24px, 3.2vw, 44px);
   font-weight: 300;
   letter-spacing: -1px;
+  overflow-wrap: anywhere;
 }
 .email span {
   font-size: 0.7em;
@@ -652,13 +655,6 @@ a:hover {
   stroke-linejoin: round;
   transition: transform 0.2s ease;
 }
-.round-arrow {
-  width: var(--arrow-size);
-  height: auto;
-  aspect-ratio: 1;
-  border: 0;
-  transition: background-color 0.2s ease;
-}
 .round-arrow .arrow-icon {
   width: 48%;
   height: 48%;
@@ -682,6 +678,9 @@ a:hover .round-arrow {
   line-height: 1.4;
   text-align: left;
   overflow-wrap: anywhere;
+}
+.portfolio-capsule > span:last-child {
+  min-width: 0;
 }
 .capsule-mark {
   display: grid;
@@ -733,9 +732,6 @@ a:hover .round-arrow {
 .experience-content > * {
   min-width: 0;
 }
-.email {
-  overflow-wrap: anywhere;
-}
 
 /* Suuret näytöt */
 @media (min-width: 1500px) {
@@ -767,7 +763,7 @@ a:hover .round-arrow {
     max-height: 540px;
   }
   .hero h1 {
-    font-size: 155px;
+    font-size: clamp(110px, 15.5vw, 155px);
   }
   .hero-rail {
     left: -8px;
@@ -787,6 +783,9 @@ a:hover .round-arrow {
   }
   .cards-grid {
     gap: 16px;
+  }
+  .article-body {
+    padding: 16px;
   }
   .footer-top {
     align-items: start;
@@ -892,7 +891,6 @@ a:hover .round-arrow {
     right: -15px;
     width: 100%;
     max-height: 415px;
-    object-position: 50% 100%;
     z-index: 0;
   }
   .scroll-link {
@@ -1029,11 +1027,6 @@ a:hover .round-arrow {
   .experience-content > img {
     height: 180px;
   }
-  .experience-content .round-arrow {
-    width: 44px;
-    height: 44px;
-    font-size: 22px;
-  }
   .offer-section {
     padding-bottom: 60px;
   }
@@ -1057,8 +1050,6 @@ a:hover .round-arrow {
   }
   .project-image .round-arrow {
     opacity: 1;
-    width: 44px;
-    height: 44px;
     font-size: 22px;
   }
   .project-caption h3 {
@@ -1158,4 +1149,21 @@ a:hover .round-arrow {
 }
 .section-spark {
   vertical-align: -0.1em;
+}
+
+/* Kosketuskohteet ja kuvakkeiden näkyvyys ilman hoveria. */
+.text-link,
+.menu-toggle,
+.footer nav a,
+.article-body summary {
+  min-height: 44px;
+}
+.footer nav a {
+  display: inline-flex;
+  align-items: center;
+}
+@media (hover: none) {
+  .project-image .round-arrow {
+    opacity: 1;
+  }
 }
