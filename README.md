@@ -60,3 +60,16 @@ Haara `fix/final-visual-polish` perustuu main-commitiin `e91866c`. Nuolikomponen
 Hero-kuvan alkuperäinen tiedosto säilytettiin: CSS-kehys rajaa yläreunasta vähintään 51 lähdekuvapikseliä kaikilla testileveyksillä ilman uudelleenpakkausta. Sivun kuvasuhde on ilmoitettu kuvan todellisten mittojen mukaan.
 
 Tekniset Chromium-testit on ajettu viidellä leveydellä. Alkuperäisen mallin vertailu jäi avoimeksi: Dribbble-osoitteen lataus sai ympäristön proxylta 403-vastauksen. Figma-prototyypin linkkiä tai palautusta ei ole varmistettu. Katso tarkat tulokset ja palautuksen avoimet asiat tiedostoista `VALIDATION.md` ja `COURSE.md`.
+
+
+## Toistettava selaintarkistus
+
+Käynnistä HTTP-palvelin repositoryn juuresta ja suorita toisessa terminaalissa:
+
+```sh
+node tests/browser-check.cjs
+```
+
+Tarkistin tarvitsee kehitysympäristössä Playwrightin ja Chromiumin; itse sivustoon ei lisätty npm-riippuvuuksia. Chromiumin oletuspolku on `/usr/bin/chromium` (ylikirjoitus `CHROMIUM_PATH`), palvelimen osoite `http://127.0.0.1:5500` (`SITE_URL`) ja kuvakaappaushakemisto `/tmp/portfolio-check` (`SCREENSHOT_DIR`). Tarkistin ei korvaa kuvien visuaalista tarkastusta.
+
+Aiempi viimeistely löytyi paikallisesta commitista `ae50199` haaralta `fix/final-visual-polish`. Sen pohjalta jatkettiin; main-haaraa ei palautettu vanhempaan versioon. Muutokset viedään erilliseen tarkistettavaan haaraan, ei suoraan mainiin.

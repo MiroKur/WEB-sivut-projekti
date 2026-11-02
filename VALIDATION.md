@@ -106,3 +106,12 @@ Kokosivukuvat otettiin kaikilla viidellä leveydellä. Hero-, About-, Experience
 ### Palautusvalmiuden rajat
 
 Tekniset tarkistukset läpäisty. Kokonaista palautusvalmiutta ei vahvisteta: alkuperäistä Wolfpixel-mallia ei saatu ladattua (proxy CONNECT 403), eikä paikallista mallikuvaa löytynyt. Figma-prototyyppiä, sen linkkiä tai palautusta ei ole nähty. Käyttäjän tulee vielä verrata alkuperäiseen malliin, varmistaa Figma-mobiiliprototyypin palautus sekä täydentää jäsenet, palautuslinkit ja palautusmuoto. Desktop-proto on projektin lisätavoite, ei dokumentoitu pakollinen vaatimus. D.Nova-mallisisältöjä ei muutettu; niiden hyväksyttävyyttä arvioinnissa ei ole erikseen vahvistettu. Ruudunlukijaa tai muita selainmoottoreita ei testattu.
+
+
+## Työn jatkaminen ja uusintatarkistus 2.11.2026
+
+`git status`, `git branch -avv`, `git log --all --oneline -12`, `git fetch origin` ja `git diff` vahvistivat tilanteen: työpuu puhdas, paikallinen viimeistelyhaara mainia `e91866c` edellä commitilla `ae50199`. Aiemmat CSS/HTML-korjaukset ja dokumentaatio olivat tallessa. Niitä ei toteutettu uudelleen. Väliaikainen selaintestiskripti ei ollut säilynyt; toistettava tarkistin lisättiin tiedostoon `tests/browser-check.cjs`.
+
+Tarkistin suoritettiin onnistuneesti 320/390/768/1024/1440 px leveyksillä. Se tarkistaa kuvat, kaikki neljä fonttileikkausta, sivun ylivuodon, nuoliympyrät, hero-rajauksen, Tab-ohituslinkin, mobiilivalikon ja Escapen, ankkurin, accordionin, View More / Show Less -tilat, blogin, focuksen, pitkän kapselitekstin ja reduced motion -tilan. Konsoli- ja verkkovirheitä ei ollut. Kokosivukuvat otettiin ja katsottiin kaikilla viidellä leveydellä; osiokuvat tallennettiin 390/768/1440 px leveyksillä. Uusien kuvien polku tässä ympäristössä on `/tmp/portfolio-check/`; aiemman ympäristön scratch-kuvien säilymiseen ei pidä luottaa. `node --check script.js`, testiskriptin syntaksi ja `git diff --check` läpäisty.
+
+Uusia merkittäviä visuaalisia puutteita ei löytynyt. Dribbble-referenssi palauttaa edelleen proxyn CONNECT 403 -virheen: mallivertailu ja Figma-palautuksen varmistus jäävät avoimiksi. GitHubin PR-rajapintojen GraphQL- ja REST-pyynnöt palauttivat Forbidden-virheen. Tämä on erillinen este PR:n luonnille, ei osoitus Git-pushin epäonnistumisesta; pushin tila varmistetaan etähaaran SHA:sta.
