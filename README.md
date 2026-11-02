@@ -10,7 +10,7 @@ Avaa kansio VS Codessa ja käynnistä `index.html` Live Serverillä, tai:
 python -m http.server 5500
 ```
 
-Avaa http://localhost:5500. Sivun voi avata myös suoraan index.html-tiedostosta. Google Fonts tarvitsee verkkoyhteyden; ilman sitä käytetään Arialia.
+Avaa http://localhost:5500. Sivun voi avata myös suoraan index.html-tiedostosta. Poppins (300–600) ladataan paikallisista WOFF2-tiedostoista. Fontin SIL Open Font License löytyy tiedostosta `assets/fonts/OFL.txt`; verkkoyhteyttä fonttipalveluun ei tarvita.
 
 ## Tiedostot
 
@@ -33,17 +33,21 @@ Kuvat ovat käyttäjän toimittamasta kurssimateriaalista (Pexels/tekoälykuvat)
 
 Sivun yläpuolinen Dribbble-esittelyotsikko ja kannettavan tietokoneen kehys eivät kuulu itse verkkosivuun.
 
+## Toteutustavan korjaus 2.11.2026
+
+Työhaara: `fix/course-ui-elements`, lähtötilanne commitissa `1a845a3`.
+
+- Portfolio-kapseli on `inline-flex`-komponentti: reunus, pyöristys, sisäympyrä ja sen maapalloa muistuttava koriste tehdään CSS:llä. Tekstiä voi vaihtaa HTML:ssä.
+- Pyöreä `.round-arrow` käyttää yhteistä kokomuuttujaa, CSS-ympyrää ja itse määriteltyä SVG-nuolta. Samaa nuolta käytetään tekstilinkeissä. Linkit navigoivat; View More on painike.
+- About Me -nuolikoriste on itse määritelty SVG. Tähtikoristeet ja footerin viivageometria rakennetaan CSS:llä.
+- CSS on avattu luettavaksi ja ryhmitelty osioihin. Grid-, Flexbox-, clamp-, aspect-ratio-, hover-, focus- ja reduced-motion-ratkaisut säilyvät.
+- View More vaihtaa vain tekstisolmun sisällön; SVG-kuvake säilyy. Natiivi details/summary ja nykyinen mobiilivalikko säilyvät.
+- Hero-kuvan yläreunan vaalea kuvakaappauskaistale rajataan kuvakehyksessä CSS:llä. Alkuperäinen kuvatiedosto säilyy.
+
+Kuva- ja elementtikohtainen auditointi sekä suoritetut testit: [VALIDATION.md](VALIDATION.md).
+
+Alkuperäistä kokonaista Wolfpixel-mallikuvaa ei ole tässä repositoriossa. Sommittelu perustuu nykyiseen toteutukseen; tarkka mallivertailu on vielä tehtävä kurssin alkuperäistä referenssiä vasten.
+
 ## GitHub
 
-Uusi repo voidaan luoda nimellä `portfolio-course`, esimerkiksi yksityiseksi kurssityöksi. Kun tyhjä repo on luotu GitHubissa:
-
-```sh
-git init
-git add .
-git commit -m "Build responsive portfolio course project"
-git branch -M main
-git remote add origin https://github.com/OMA-TUNNUS/portfolio-course.git
-git push -u origin main
-```
-
-Jos kansiossa on jo paikallinen Git-historia, aloita remote-komennosta. GitHub Pages toimii tällä staattisella rakenteella ilman sovelluspalvelinta.
+Olemassa oleva repository: https://github.com/MiroKur/WEB-sivut-projekti . Korjauksia ei ole pushattu eikä sivustoa julkaistu. Staattinen rakenne sopii GitHub Pagesiin ilman build-vaihetta.
