@@ -1,0 +1,87 @@
+{
+  "portrait-hero": {
+    "source": "Näyttökuva 2026-10-24 210054.png",
+    "width": 1160,
+    "height": 1075
+  },
+  "portrait-smile": {
+    "source": "Näyttökuva 2026-10-24 210129.png",
+    "width": 1031,
+    "height": 1006
+  },
+  "portrait-close": {
+    "source": "Näyttökuva 2026-10-24 210145.png",
+    "width": 1112,
+    "height": 1044
+  },
+  "chair": {
+    "source": "Näyttökuva 2026-10-24 210340.png",
+    "width": 1045,
+    "height": 970
+  },
+  "sculptural-chairs": {
+    "source": "Näyttökuva 2026-10-24 210403.png",
+    "width": 1400,
+    "height": 917
+  },
+  "colorful-chairs": {
+    "source": "Näyttökuva 2026-10-24 210431.png",
+    "width": 1117,
+    "height": 720
+  },
+  "studio": {
+    "source": "Näyttökuva 2026-10-24 210459.png",
+    "width": 1058,
+    "height": 765
+  },
+  "sofa": {
+    "source": "Näyttökuva 2026-10-24 210828.png",
+    "width": 1008,
+    "height": 1229
+  },
+  "interior": {
+    "source": "Näyttökuva 2026-10-24 210851.png",
+    "width": 1400,
+    "height": 905
+  },
+  "consultation": {
+    "source": "Näyttökuva 2026-10-24 210945.png",
+    "width": 1335,
+    "height": 901
+  },
+  "light": {
+    "source": "Näyttökuva 2026-10-24 211033.png",
+    "width": 857,
+    "height": 1228
+  },
+  "architecture": {
+    "source": "Näyttökuva 2026-10-24 212705.png",
+    "width": 703,
+    "height": 1112
+  },
+  "curve": {
+    "source": "Näyttökuva 2026-10-24 212750.png",
+    "width": 1243,
+    "height": 752
+  },
+  "logo": {
+    "source": "Näyttökuva 2026-10-24 212814.png",
+    "width": 697,
+    "height": 750
+  },
+  "globe": {
+    "source": "Näyttökuva 2026-10-24 212830.png",
+    "width": 469,
+    "height": 406
+  },
+  "arrow": {
+    "source": "Näyttökuva 2026-10-24 212842.png",
+    "width": 547,
+    "height": 426
+  },
+  "squeeze": {
+    "source": "Näyttökuva 2026-10-24 212903.png",
+    "width": 515,
+    "height": 168
+  }
+}
