@@ -27,3 +27,10 @@ Työpöytäproto: [liitä desktop-proton linkki]
 Jäsenet: [täydennä oma nimi / ryhmän jäsenet]
 
 Idea: Mukautimme annetun työpöytäleiskan yhden palstan mobiilikokemukseksi. Säilytimme sisältöjärjestyksen, Poppins-typografian ja hillityn harmaasävyisen ilmeen. Mobiilivalikko ohjaa saman sivun osioihin; työhistoria avautuu accordionina ja työnostot ovat selkeästi kosketettavia. Sivusto toteutetaan HTML:llä, CSS:llä ja JavaScriptillä.
+
+
+## Tekninen toteutus ja palautuksen tilanne (vaihe 2)
+
+HTML/CSS/JS-toteutus ja responsiivinen toiminta on testattu Chromiumilla (320–1440 px); yksityiskohdat `VALIDATION.md`:ssä. Tämä ei vahvista alkuperäisen mallin tarkkaa vastaavuutta eikä palautuksen valmistumista.
+
+Pakolliseksi dokumentoitu mobiilin Figma-prototyyppi on yhä varmistamatta: repositoriossa ei ole vahvistettua prototyyppilinkkiä tai näyttöä palautuksesta. Desktop-proto on tämän projektin lisätavoite. Käyttäjän tulee täydentää prototyyppilinkit ja jäsenet sekä tarkistaa lopullinen palautusmuoto ja määräaika. D.Nova on säilytetty mallisisältönä; henkilökohtaisia tietoja tai uusia asiakasprojekteja ei keksitty.

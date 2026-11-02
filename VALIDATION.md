@@ -64,4 +64,45 @@ Google Fonts -pyyntö epäonnistui ympäristön verkkorajoituksen vuoksi. Fontti
 
 Alkuperäistä Wolfpixel-kokonaismallikuvaa ei ole paikallisesti, joten pikselintarkkaa vastaavuutta ei väitetä. Vertaa kurssin alkuperäiseen kuvaan erityisesti kapselin yksityiskohtia, hero-kuvan mittakaavaa, osioiden välistyksiä ja footerin viivojen sijaintia. Nykyinen järjestys ja sommittelu on säilytetty.
 
-Ruudunlukija- ja muiden selainmoottorien testejä ei tehty. Figma-palautus ja henkilökohtaiset mallisisältöjen vaihdot ovat erillisiä tehtäviä. GitHubiin ei pushattu eikä sivustoa julkaistu.
+Ruudunlukija- ja muiden selainmoottorien testejä ei tehty. Figma-palautus ja henkilökohtaiset mallisisältöjen vaihdot ovat erillisiä tehtäviä. Vaiheen 1 korjaukset on pushattu ja yhdistetty main-haaraan PR #10:ssä. Sivuston julkaisun tilaa ei ole varmistettu.
+
+
+## Vaihe 2: visuaalinen viimeistely
+
+Lähtötilana main `e91866c`, jossa PR #10 on mukana. Uusi työhaara `fix/final-visual-polish`. Työpuu oli aluksi puhdas. `index.html`, `styles.css`, `script.js`, `README.md`, `VALIDATION.md` ja `COURSE.md` luettiin. Toimivaa sivurakennetta ei rakennettu uudelleen.
+
+### Löydökset ja korjaukset
+
+- Nuolten 52/44 px kokomääritykset olivat päällekkäisiä: koko tulee nyt yhdestä `--arrow-size`-muuttujasta. Ympyrän sivut mitattiin selaimessa yhtä pitkiksi kaikilla leveyksillä.
+- Tabletin hero-otsikko käytti kiinteää 155 px kokoa: vaihdettu clamp-arvoksi. Blogikorttien tabletin sisäväliä pienennetty 16 px:iin tekstille jäävän tilan kasvattamiseksi.
+- Services-linkki vei työhistoriaan: muutettu Experience-tekstiksi sekä headerissa että footerissa. Alkuperäisen referenssin linkkitekstiä ei voitu varmistaa.
+- Tekstilinkkien, mobiilivalikon, footer-linkkien ja blogin summaryn kosketuskorkeus vähintään 44 px. Projektinuolet näkyvät myös hoverittomilla laitteilla.
+- Pitkän kapselitekstin kutistuminen sallittu; pidemmällä esimerkkitekstillä tarkistettu, ettei kapseli vuoda.
+- Hero-kuvan alkuperäinen säilytetty. Kuvan mitat korjattu HTML:ään (1160 × 1075). CSS-kehyksen yläraja mitattiin suhteessa kuvaan: ylin 51 px jää pois kaikilla testileveyksillä. Rajatun kuvatiedoston lisäämiselle ei ollut tarvetta, koska nykyinen ratkaisu säilyttää laadun ja toimii.
+- Turhat object-fit/object-position-määritykset div-kehykseltä ja käyttämätön muuttuja poistettu; sähköpostin säännöt yhdistetty.
+- Favicon puuttui ja aiheutti konsoliin 404-virheen: linkitetty nykyiseen logo.webp-tiedostoon.
+- Ohituslinkki näkyi pitkien osioiden kuvakaappauksissa piilotuksesta huolimatta: piilotus käyttää nyt opacityä ja pointer-events-määritystä; näppäimistökohdistus palauttaa näkyvyyden.
+
+### Vaiheen 2 testit
+
+Chromium / Playwright paikallisella HTTP-palvelimella. Leveydet 320, 390, 768, 1024 ja 1440 px, korkeus 900 px. Jokaisella leveydellä läpäisty:
+
+- sivun scrollWidth vastaa viewportin leveyttä;
+- kaikki kuvat dekoodautuvat, alt-attribuutit löytyvät;
+- kaikki neljä paikallista Poppins-leikkausta ladattiin ja FontFace-tilat olivat loaded;
+- näkyvien nuoliympyröiden leveys ja korkeus ovat samat;
+- hero-kuvan yläkaistale jää CSS-rajauksen ulkopuolelle;
+- ensimmäinen Tab kohdistaa ohituslinkin, Enter aktivoi sen;
+- mobiilissa valikko avautuu Enterillä, Escape sulkee ja palauttaa kohdistuksen, ankkurilinkki sulkee valikon;
+- kahden Experience-rivin avaus Enterillä pitää vain yhden rivin auki;
+- View More / Show Less toimii Enterillä, näkyvyys ja aria-expanded vaihtuvat;
+- blogi avautuu Enterillä, focus-outline on näkyvä;
+- pidempi kapseliteksti mahtuu ilman sisäistä vaakaylivuotoa.
+
+Reduced motion: scroll-behavior on auto. Lopputestissä ei JavaScript-, konsoli- tai epäonnistuneita verkkopyyntöjä. `node --check script.js` ja `git diff --check` läpäisty. Faviconin korjauksen jälkeen testit ajettiin uudelleen.
+
+Kokosivukuvat otettiin kaikilla viidellä leveydellä. Hero-, About-, Experience- ja Portfolio-osiokuvat otettiin 390/768/1440 px leveyksillä. Kuvia tarkasteltiin visuaalisesti: tekstien rivittyminen, kuvien rajaukset, korttien välit ja osioiden sommittelu; merkittäviä sisältöjen päällekkäisyyksiä ei havaittu. Testikuvat ovat tämän työympäristön hakemistossa `/workspace/scratch/visual-polish/`, eivät Gitissä. Testit käyttivät reduced-motion-tilaa vakaita kuvakaappauksia varten; hover-animaation ajallista etenemistä ei mitattu.
+
+### Palautusvalmiuden rajat
+
+Tekniset tarkistukset läpäisty. Kokonaista palautusvalmiutta ei vahvisteta: alkuperäistä Wolfpixel-mallia ei saatu ladattua (proxy CONNECT 403), eikä paikallista mallikuvaa löytynyt. Figma-prototyyppiä, sen linkkiä tai palautusta ei ole nähty. Käyttäjän tulee vielä verrata alkuperäiseen malliin, varmistaa Figma-mobiiliprototyypin palautus sekä täydentää jäsenet, palautuslinkit ja palautusmuoto. Desktop-proto on projektin lisätavoite, ei dokumentoitu pakollinen vaatimus. D.Nova-mallisisältöjä ei muutettu; niiden hyväksyttävyyttä arvioinnissa ei ole erikseen vahvistettu. Ruudunlukijaa tai muita selainmoottoreita ei testattu.
