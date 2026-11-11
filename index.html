@@ -17,8 +17,8 @@
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="#home" aria-label="D.Nova home"
-          ><img src="assets/logo.webp" width="44" height="44" alt="D.Nova"
-        /></a>
+          ><img src="assets/logo.webp" alt="D.Nova"
+         width="256" height="256" /></a>
         <button
           class="menu-toggle"
           type="button"
@@ -52,10 +52,10 @@
           <div class="hero-copy">
             <div class="stats">
               <div>
-                <strong><sup>+</sup>200</strong><span>Projects completed</span>
+                <strong aria-label="Over 200"><sup aria-hidden="true">+</sup><span class="counter" data-count="200" aria-hidden="true">200</span></strong><span>Projects completed</span>
               </div>
               <div>
-                <strong><sup>+</sup>50</strong><span>Happy clients</span>
+                <strong aria-label="Over 50"><sup aria-hidden="true">+</sup><span class="counter" data-count="50" aria-hidden="true">50</span></strong><span>Happy clients</span>
               </div>
             </div>
             <h1>Hello</h1>
@@ -69,10 +69,8 @@
               class="hero-portrait-image"
               src="assets/portrait-hero.webp"
               alt="D.Nova, a designer wearing glasses"
-              width="1160"
-              height="1075"
               fetchpriority="high"
-            />
+             width="1024" height="1024" />
           </div>
         </div>
       </section>
@@ -97,25 +95,21 @@
             </svg>
           </div>
           <div class="metric-card">
-            <span class="spark" aria-hidden="true"></span><strong>120%</strong>
+            <img class="metric-globe" src="assets/globe.webp" alt="" loading="lazy"  width="96" height="95" /><strong>120%</strong>
             <p>Average increase in client engagement in the first 6 months</p>
             <img
               src="assets/portrait-smile.webp"
               alt="D.Nova smiling"
-              width="500"
-              height="500"
               loading="lazy"
-            />
+             width="1024" height="1024" />
           </div>
           <div class="about-detail">
             <img
               class="small-portrait"
               src="assets/portrait-close.webp"
               alt="Portrait of D.Nova"
-              width="320"
-              height="270"
               loading="lazy"
-            />
+             width="1024" height="1024" />
             <p class="icon-paragraph">
               <span aria-hidden="true">✦</span>With 4+ years of experience, I
               specialize in creating intuitive, user-focused designs that solve
@@ -130,14 +124,14 @@
         </div>
       </section>
       <section class="showcase" aria-label="Featured design projects">
-        <div class="showcase-grid">
+        <div class="showcase-grid" id="showcase-track" tabindex="0" role="region" aria-label="Featured projects, scroll horizontally">
           <a class="project" href="#portfolio"
             ><div class="project-image">
               <img
                 src="assets/chair.webp"
                 alt="Minimal chair against a muted green wall"
                 loading="lazy"
-              /><span class="round-arrow" aria-hidden="true"
+               width="1400" height="1400" /><span class="round-arrow" aria-hidden="true"
                 ><svg
                   class="arrow-icon"
                   viewBox="0 0 24 24"
@@ -150,7 +144,7 @@
             </div>
             <div class="project-caption">
               <h3>Living, thoughtfully</h3>
-              <span class="client-label">For Squeeze</span>
+              <img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" />
             </div></a
           >
           <a class="project" href="#portfolio"
@@ -159,7 +153,7 @@
                 src="assets/sculptural-chairs.webp"
                 alt="Sculptural white and orange lounge chairs"
                 loading="lazy"
-              /><span class="round-arrow" aria-hidden="true"
+               width="1400" height="920" /><span class="round-arrow" aria-hidden="true"
                 ><svg
                   class="arrow-icon"
                   viewBox="0 0 24 24"
@@ -172,7 +166,7 @@
             </div>
             <div class="project-caption">
               <h3>Halo Digital Agency website</h3>
-              <span class="client-label">For Squeeze</span>
+              <img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" />
             </div></a
           >
           <a class="project" href="#portfolio"
@@ -181,7 +175,7 @@
                 src="assets/colorful-chairs.webp"
                 alt="Two colorful upholstered chairs"
                 loading="lazy"
-              /><span class="round-arrow" aria-hidden="true"
+               width="1400" height="895" /><span class="round-arrow" aria-hidden="true"
                 ><svg
                   class="arrow-icon"
                   viewBox="0 0 24 24"
@@ -194,9 +188,14 @@
             </div>
             <div class="project-caption">
               <h3>A little more character</h3>
-              <span class="client-label">For Squeeze</span>
+              <img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" />
             </div></a
           >
+        </div>
+        <div class="showcase-controls container" hidden>
+          <button type="button" class="carousel-prev" aria-label="Previous featured project" aria-controls="showcase-track">←</button>
+          <input class="showcase-position" type="range" min="0" max="100" value="50" step="0.1" aria-label="Featured projects scroll position" aria-controls="showcase-track" />
+          <button type="button" class="carousel-next" aria-label="Next featured project" aria-controls="showcase-track">→</button>
         </div>
       </section>
       <section id="experience" class="experience section">
@@ -247,7 +246,7 @@
                   src="assets/studio.webp"
                   alt="Creative studio with colorful storage"
                   loading="lazy"
-                />
+                 width="1400" height="1011" />
                 <p>
                   Turning ambitious ideas into clear, accessible products. From
                   discovery to polished interfaces, I work closely with teams to
@@ -285,7 +284,7 @@
                   src="assets/interior.webp"
                   alt="Modern open plan interior"
                   loading="lazy"
-                />
+                 width="1400" height="933" />
                 <p>
                   Creating coherent visual systems and testing early concepts
                   with real users. Small, considered design decisions build a
@@ -322,7 +321,7 @@
                   src="assets/colorful-chairs.webp"
                   alt="Colorful design furniture"
                   loading="lazy"
-                />
+                 width="1400" height="895" />
                 <p>
                   Building memorable identities with a clear point of view.
                   Strategy, typography and a thoughtful visual language come
@@ -361,15 +360,15 @@
                     src="assets/chair.webp"
                     alt="Modern chair"
                     loading="lazy"
-                  /><img
+                   width="1400" height="1400" /><img
                     src="assets/sculptural-chairs.webp"
                     alt="Sculptural lounge chairs"
                     loading="lazy"
-                  /><img
+                   width="1400" height="920" /><img
                     src="assets/colorful-chairs.webp"
                     alt="Patterned chairs"
                     loading="lazy"
-                  />
+                   width="1400" height="895" />
                 </div>
                 <p>
                   From crafting seamless user experiences to leading strategic
@@ -409,7 +408,7 @@
                   src="assets/sofa.webp"
                   alt="Warm interior details"
                   loading="lazy"
-                />
+                 width="933" height="1400" />
                 <p>
                   Learning through making, collaborating and asking better
                   questions. A hands-on foundation in responsive websites,
@@ -440,9 +439,11 @@
               src="assets/consultation.webp"
               alt="Designers reviewing plans together"
               loading="lazy"
-            />
+             width="1400" height="933" />
             <div class="offer-copy">
+              <p class="offer-eyebrow">(Book Your Free Consultation Now!)</p>
               <h2>Exclusive Winter Deal Days Get a<br />Free Consultation!</h2>
+              <p class="offer-description">Take advantage of this limited-time offer to discuss your design needs with an experienced UI/UX and product designer.</p>
               <a class="text-link light" href="#contact"
                 >Let’s talk
                 <span aria-hidden="true"
@@ -475,7 +476,7 @@
                   src="assets/studio.webp"
                   alt="Bright modular creative studio"
                   loading="lazy"
-                /><span class="round-arrow" aria-hidden="true"
+                 width="1400" height="1011" /><span class="round-arrow" aria-hidden="true"
                   ><svg
                     class="arrow-icon"
                     viewBox="0 0 24 24"
@@ -499,7 +500,7 @@
                     <path d="M5 19 19 5M5 5h14v14" /></svg
                 ></span>
               </div>
-              <p class="project-type">Website · Art direction</p></a
+              <div class="project-footer"><p class="project-type">Website · Art direction</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             >
             <a class="project" href="#contact"
               ><div class="project-image">
@@ -507,7 +508,7 @@
                   src="assets/sofa.webp"
                   alt="Cozy sofa with a woven cushion"
                   loading="lazy"
-                /><span class="round-arrow" aria-hidden="true"
+                 width="933" height="1400" /><span class="round-arrow" aria-hidden="true"
                   ><svg
                     class="arrow-icon"
                     viewBox="0 0 24 24"
@@ -531,7 +532,7 @@
                     <path d="M5 19 19 5M5 5h14v14" /></svg
                 ></span>
               </div>
-              <p class="project-type">Branding · Digital experience</p></a
+              <div class="project-footer"><p class="project-type">Branding · Digital experience</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             >
             <a class="project" href="#contact"
               ><div class="project-image">
@@ -539,7 +540,7 @@
                   src="assets/interior.webp"
                   alt="Carefully composed contemporary interior"
                   loading="lazy"
-                /><span class="round-arrow" aria-hidden="true"
+                 width="1400" height="933" /><span class="round-arrow" aria-hidden="true"
                   ><svg
                     class="arrow-icon"
                     viewBox="0 0 24 24"
@@ -563,7 +564,7 @@
                     <path d="M5 19 19 5M5 5h14v14" /></svg
                 ></span>
               </div>
-              <p class="project-type">Website · Creative direction</p></a
+              <div class="project-footer"><p class="project-type">Website · Creative direction</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             >
           </div>
           <div class="cards-grid more-projects" id="more-projects" hidden>
@@ -573,30 +574,30 @@
                   src="assets/chair.webp"
                   alt="A minimal green chair"
                   loading="lazy"
-                />
+                 width="1400" height="1400" />
               </div>
               <h3>Everyday, elevated</h3>
-              <p class="project-type">Product design · Strategy</p></a
+              <div class="project-footer"><p class="project-type">Product design · Strategy</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             ><a class="project" href="#contact"
               ><div class="project-image">
                 <img
                   src="assets/sculptural-chairs.webp"
                   alt="Organic furniture forms"
                   loading="lazy"
-                />
+                 width="1400" height="920" />
               </div>
               <h3>Form meets function</h3>
-              <p class="project-type">Branding · Art direction</p></a
+              <div class="project-footer"><p class="project-type">Branding · Art direction</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             ><a class="project" href="#contact"
               ><div class="project-image">
                 <img
                   src="assets/colorful-chairs.webp"
                   alt="Playful chairs with bold patterns"
                   loading="lazy"
-                />
+                 width="1400" height="895" />
               </div>
               <h3>A colorful perspective</h3>
-              <p class="project-type">Website · Visual identity</p></a
+              <div class="project-footer"><p class="project-type">Website · Visual identity</p><img class="client-logo" src="assets/squeeze.webp" alt="For Squeeze" loading="lazy"  width="310" height="77" /></div></a
             >
           </div>
           <div class="center-action">
@@ -632,11 +633,11 @@
           </div>
           <div class="cards-grid">
             <article class="article-card">
-              <img
-                src="assets/light.webp"
-                alt="Abstract colorful light trails"
+              <div class="article-image"><img
+                src="assets/architecture.webp"
+                alt="Blue abstract architectural curves"
                 loading="lazy"
-              />
+               width="788" height="1400" /></div>
               <div class="article-body">
                 <p class="article-meta">Design <span>5 min read</span></p>
                 <h3>Finding clarity in a world of visual noise</h3>
@@ -664,11 +665,11 @@
               </div>
             </article>
             <article class="article-card">
-              <img
-                src="assets/architecture.webp"
-                alt="Rhythmic blue architectural lines"
+              <div class="article-image"><img
+                src="assets/light.webp"
+                alt="Red and purple abstract light trails"
                 loading="lazy"
-              />
+               width="933" height="1400" /></div>
               <div class="article-body">
                 <p class="article-meta">Inspiration <span>5 min read</span></p>
                 <h3>What architecture can teach us about interfaces</h3>
@@ -696,11 +697,11 @@
               </div>
             </article>
             <article class="article-card">
-              <img
-                src="assets/sofa.webp"
-                alt="Soft textures in a considered interior"
+              <div class="article-image"><img
+                src="assets/abstract-flow.webp"
+                alt="Flowing abstract blue and violet forms"
                 loading="lazy"
-              />
+               width="800" height="1200" /></div>
               <div class="article-body">
                 <p class="article-meta">Process <span>5 min read</span></p>
                 <h3>Designing experiences that feel a little more human</h3>
