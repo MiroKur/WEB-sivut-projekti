@@ -1,63 +1,99 @@
 {
   "portrait-hero": {
-    "source": "Näyttökuva 2026-10-24 210054.png",
-    "width": 1160,
-    "height": 1075
+    "source": "ChatGPT Image Aug 14, 2025, 10_27_12 AM.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 1024,
+    "original_height": 1024,
+    "width": 1024,
+    "height": 1024
   },
   "portrait-smile": {
-    "source": "Näyttökuva 2026-10-24 210129.png",
-    "width": 1031,
-    "height": 1006
+    "source": "ChatGPT Image Aug 14, 2025, 10_31_17 AM.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 1024,
+    "original_height": 1024,
+    "width": 1024,
+    "height": 1024
   },
   "portrait-close": {
-    "source": "Näyttökuva 2026-10-24 210145.png",
-    "width": 1112,
-    "height": 1044
+    "source": "ChatGPT Image Aug 14, 2025, 10_36_39 AM.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 1024,
+    "original_height": 1024,
+    "width": 1024,
+    "height": 1024
   },
   "chair": {
-    "source": "Näyttökuva 2026-10-24 210340.png",
-    "width": 1045,
-    "height": 970
+    "source": "pexels-pu-ca-adryan-163345030-32383826.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 3000,
+    "original_height": 3000,
+    "width": 1400,
+    "height": 1400
   },
   "sculptural-chairs": {
-    "source": "Näyttökuva 2026-10-24 210403.png",
+    "source": "pexels-pixabay-220749.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 5739,
+    "original_height": 3770,
     "width": 1400,
-    "height": 917
+    "height": 920
   },
   "colorful-chairs": {
-    "source": "Näyttökuva 2026-10-24 210431.png",
-    "width": 1117,
-    "height": 720
+    "source": "pexels-eric-mufasa-578798-1350789.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 4664,
+    "original_height": 2982,
+    "width": 1400,
+    "height": 895
   },
   "studio": {
-    "source": "Näyttökuva 2026-10-24 210459.png",
-    "width": 1058,
-    "height": 765
+    "source": "pexels-atbo-66986-245208.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 3222,
+    "original_height": 2327,
+    "width": 1400,
+    "height": 1011
   },
   "sofa": {
-    "source": "Näyttökuva 2026-10-24 210828.png",
-    "width": 1008,
-    "height": 1229
+    "source": "pexels-cmrcn-30243613.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 4160,
+    "original_height": 6240,
+    "width": 933,
+    "height": 1400
   },
   "interior": {
-    "source": "Näyttökuva 2026-10-24 210851.png",
+    "source": "pexels-dropshado-2251247.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 5184,
+    "original_height": 3456,
     "width": 1400,
-    "height": 905
+    "height": 933
   },
   "consultation": {
-    "source": "Näyttökuva 2026-10-24 210945.png",
-    "width": 1335,
-    "height": 901
+    "source": "pexels-ivan-samkov-8962799.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 5472,
+    "original_height": 3648,
+    "width": 1400,
+    "height": 933
   },
   "light": {
-    "source": "Näyttökuva 2026-10-24 211033.png",
-    "width": 857,
-    "height": 1228
+    "source": "pexels-marek-piwnicki-3907296-10233095 (1).jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 3648,
+    "original_height": 5472,
+    "width": 933,
+    "height": 1400
   },
   "architecture": {
-    "source": "Näyttökuva 2026-10-24 212705.png",
-    "width": 703,
-    "height": 1112
+    "source": "pexels-sean-whang-25006-804269.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 2362,
+    "original_height": 4199,
+    "width": 788,
+    "height": 1400
   },
   "curve": {
     "source": "Näyttökuva 2026-10-24 212750.png",
@@ -65,14 +101,20 @@
     "height": 752
   },
   "logo": {
-    "source": "Näyttökuva 2026-10-24 212814.png",
-    "width": 697,
-    "height": 750
+    "source": "logo.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 1024,
+    "original_height": 1024,
+    "width": 256,
+    "height": 256
   },
   "globe": {
-    "source": "Näyttökuva 2026-10-24 212830.png",
-    "width": 469,
-    "height": 406
+    "source": "globe.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 96,
+    "original_height": 95,
+    "width": 96,
+    "height": 95
   },
   "arrow": {
     "source": "Näyttökuva 2026-10-24 212842.png",
@@ -80,8 +122,19 @@
     "height": 426
   },
   "squeeze": {
-    "source": "Näyttökuva 2026-10-24 212903.png",
-    "width": 515,
-    "height": 168
+    "source": "ForSqueeze.png",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 310,
+    "original_height": 77,
+    "width": 310,
+    "height": 77
+  },
+  "abstract-flow": {
+    "source": "pexels-diva-29776737.jpg",
+    "archive": "Kurssinkuvat tallennettuna ja muu materiaali UUDET.zip",
+    "original_width": 2736,
+    "original_height": 4104,
+    "width": 800,
+    "height": 1200
   }
 }
