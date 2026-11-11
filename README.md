@@ -1,6 +1,6 @@
 # D.Nova — responsive one-page portfolio
 
-SAMK Web-sivut -kurssiprojekti, HTML5, moderni CSS ja vanilla JavaScript. Nykyistä toteutusta on jatkettu main-commitista `17e629c` haarassa `feat/portfolio-final-interactions`. Ei build-vaihetta tai sivuston JavaScript-riippuvuuksia.
+SAMK Web-sivut -kurssiprojekti, HTML5, moderni CSS ja vanilla JavaScript. Työtä on jatkettu PR #12:n commitista `ca076e1` samalla `feat/portfolio-final-interactions`-haaralla. HTML, CSS ja JavaScript on kommentoitu suomeksi, mobiili viimeistelty ja muokattava Figma Design -mobiiliprototyyppi luotu. PR #12 yhdistettiin työn aikana; nämä jatkomuutokset ovat avoimessa [PR #13:ssa](https://github.com/MiroKur/WEB-sivut-projekti/pull/13). Ei build-vaihetta tai sivuston JavaScript-riippuvuuksia.
 
 ## Käynnistys ja tarkistus
 
@@ -25,6 +25,8 @@ Testi tarvitsee kehitysympäristössä Playwrightin ja Chromiumin. Oletukset: `C
 - [MATERIALS.md](MATERIALS.md): uuden ZIP-aineiston inventaario, käyttötarkoitukset ja puuttuvat kuvitukset.
 - [FINAL-REVIEW.md](FINAL-REVIEW.md): tämän kierroksen tulokset, rajaukset ja kuvakaappaukset.
 - [VALIDATION.md](VALIDATION.md): testaus ja aikaisempien vaiheiden historia.
+- [docs/CODE-GUIDE.md](docs/CODE-GUIDE.md): opiskelijan selitys rakenteesta ja toimintojen muuttamisesta.
+- [docs/FIGMA-MOBILE.md](docs/FIGMA-MOBILE.md): muokattava Figma-mobiili, tyyliarvot ja navigaation rajat.
 - [COURSE.md](COURSE.md): erilliset kurssi- ja Figma-palautuksen vaatimukset.
 
 ## Käyttöliittymän toiminta
@@ -39,4 +41,10 @@ Accordion käyttää details/summary-semanttiikkaa; avaus häivyttää sisällö
 
 D.Nova, asiakasmäärät, työhistoria, projektit ja hello@dnova.com ovat kurssin mallisisältöä. Henkilökohtaista portfoliota tai uusia asiakkaita ei luotu. Blogien esimerkkitekstit ja ankkuritoiminnot säilyvät; ulkoista ajanvarausta tai backendia ei ole.
 
-Suunnittelulähde: Wolfpixel UI/UX, [Personal Portfolio Website Design](https://dribbble.com/shots/24978876-Personal-Portfolio-Website-Design). Poppins korvaa Aeonikin kurssin mukaisesti. Tässä kierroksessa vertailtiin käyttäjän ZIP-paketin osiokuvia; koko sivun mallia tai opettajan videoita ei toimitettu. Puuttuvien 3D-kuvitusten vuoksi kuvajärjestyksen täsmällistä mallivastaavuutta ei voida vahvistaa. Sivuston julkaisu ja Figma-palautus ovat erillisiä tarkistuksia.
+Suunnittelulähde: Wolfpixel UI/UX, [Personal Portfolio Website Design](https://dribbble.com/shots/24978876-Personal-Portfolio-Website-Design). Poppins korvaa Aeonikin kurssin mukaisesti. Tässä kierroksessa vertailtiin käyttäjän ZIP-paketin osiokuvia; koko sivun mallia tai opettajan videoita ei toimitettu. Puuttuvien 3D-kuvitusten vuoksi kuvajärjestyksen täsmällistä mallivastaavuutta ei voida vahvistaa. Sivuston julkaisu ja Figma-palautuksen lähettäminen ovat erillisiä tarkistuksia.
+
+## Mobiili ja Figma
+
+Mobiili on oma pystysommitelmansa: hero-kuva seuraa tekstiä normaalissa virrassa, About pinotaan, työroolit säilyvät näkyvissä ja showcase-kortin otsikko sekä logo ovat eri riveillä. Playwright-tarkistin kattaa 320/360/375/390/430/768/1024/1440 px sekä viisi erillistä mobiilin kosketuskontekstia natiiveine pyyhkäisyineen.
+
+[Figma Design](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) ja [mobiiliprototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down). Tiedosto sisältää Auto Layout -framet, tekstikerrokset, komponentit/variantit ja alkuperäiset sisältökuvat; se ei ole verkkosivun kuvakaappaus. Navigaation kohteet on validoitu API:sta. Kirjautuneen selaimen esitystilan läpiklikkaus ja opettajan katseluoikeudet on vielä tarkistettava omassa Figmassa.

@@ -1,3 +1,13 @@
+# Uusin tarkistus: koodin kommentointi ja mobiili 11.11.2026
+
+Lähtö PR #12 / ca076e1, työ samalla haaralla. PR #12 yhdistettiin työn aikana; jatkomuutokset ovat erillisessä PR #13:ssa. Kommentointivaiheessa laskettujen tyylien vertailu kahdeksalla leveydellä: ei muutoksia. Mobiilin jälkeen 768/1024/1440 px asettelu- ja typografiatyylit säilyivät ennallaan mitatussa vertailussa.
+
+`tests/browser-check.cjs`: 320/360/375/390/430/768/1024/1440 px PASS. Erilliset isMobile/hasTouch-kontekstit 320/360/375/390/430 px: natiivi touchStart/touchMove/touchEnd-pyyhkäisy, valikko, accordion ja blogi PASS. Hero-, karuselli-, reduced motion-, kuva-, focus-, overflow- ja konsolitarkistukset PASS. Lopullinen koodi- ja Figma-raportti: [FINAL-REVIEW.md](FINAL-REVIEW.md).
+
+Figma Design luotu; 390 × 844 px pystyvieritettävä pääframe ja kahdeksan erillistä osiota. Rakennetta, Poppinsia, kuvakerroksia ja prototype-kohteita tarkistettiin API:lla ja renderöityjä kuvia katsottiin. Ei puuttuvia image fill -kuvia tai linkkikohteita. Esitystilan kirjautuneen selaimen läpiklikkausta ei tehty verkkoyhteyden rajoituksen vuoksi. Katso [FIGMA-MOBILE.md](docs/FIGMA-MOBILE.md).
+
+Alla oleva aikaisempien vaiheiden historia säilyy jäljitettävyyttä varten.
+
 # Uusin tarkistus: 11.11.2026
 
 Nykyinen toteutus ja testitulokset: [FINAL-REVIEW.md](FINAL-REVIEW.md). Alla olevat 2.11.2026-merkinnät ovat historiallisia; esimerkiksi kuvakaappausrajaukset ja sohva blogikuvana eivät enää kuvaa nykyistä versiota.

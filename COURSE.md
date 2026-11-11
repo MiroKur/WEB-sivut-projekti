@@ -1,5 +1,14 @@
 # Kurssin vaatimukset ja palautus
 
+## Nykyinen palautustilanne 11.11.2026 — mobiili ja dokumentointi
+
+Oikea muokattava mobiilin [Figma Design -tiedosto](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) ja [navigointiprototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down) on luotu käyttäjän SAMK-tiimiin. Aiemmat alla olevat maininnat puuttuvasta mobiilin prototyyppilinkistä ovat historiaa. Linkki on täydennetty palautustekstin pohjaan. Koodin ja mobiilin jatkomuutokset tarkistetaan [PR #13:ssa](https://github.com/MiroKur/WEB-sivut-projekti/pull/13); työn aikana yhdistetty PR #12 ei sisällä näitä myöhempiä committeja. Prototyypin lähettämistä kurssialustalle ei ole tehty eikä palautusta vahvistettu.
+
+Käyttäjä tarkistaa esitystilan omassa Figmassaan sekä opettajan katseluoikeudet, täydentää jäsenet ja varmistaa määräajan/palautusmuodon. Desktop-Figma-proto on lisätavoite, ei tämän kierroksen mobiilivaatimuksen korvike. Sivuston kahdeksan leveyden ja viiden kosketuskontekstin testit eivät yksin todista palautuksen valmistumista.
+
+Toteutuksen opas: [CODE-GUIDE.md](docs/CODE-GUIDE.md). Prototyypin rakenne ja testausraja: [FIGMA-MOBILE.md](docs/FIGMA-MOBILE.md). Uusin raportti: [FINAL-REVIEW.md](FINAL-REVIEW.md).
+
+
 ## Toimitetuista ohjeista varmistettu
 
 - Yksi yhtenäinen one-page-portfolio HTML:llä, CSS:llä ja JavaScriptillä.
@@ -20,7 +29,7 @@ Arviointitaulukkoa, lopullista määräaikaa, varsinaisen verkkosivun palautusmu
 
 ## Palautustekstin pohja
 
-Figma-prototyyppi: [liitä mobile-proton linkki]
+Figma-prototyyppi: https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down
 
 Työpöytäproto: [liitä desktop-proton linkki]
 
