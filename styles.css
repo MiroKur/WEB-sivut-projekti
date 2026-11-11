@@ -1,33 +1,40 @@
-/* Paikallinen Poppins: SIL Open Font License, assets/fonts/OFL.txt. */
+/* ==========================================
+   01. FONTIT JA CSS-MUUTTUJAT
+   Custom properties eli --alkuiset muuttujat kokoavat toistuvat värit ja mitat.
+   var() lukee arvon; Poppins ladataan paikallisesti.
+========================================== */
 @font-face {
-  font-family: "Poppins";
+  font-family: Poppins;
   font-style: normal;
   font-weight: 300;
   font-display: swap;
   src: url("assets/fonts/poppins-latin-300-normal.woff2") format("woff2");
+
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: Poppins;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url("assets/fonts/poppins-latin-400-normal.woff2") format("woff2");
+
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: Poppins;
   font-style: normal;
   font-weight: 500;
   font-display: swap;
   src: url("assets/fonts/poppins-latin-500-normal.woff2") format("woff2");
+
 }
 @font-face {
-  font-family: "Poppins";
+  font-family: Poppins;
   font-style: normal;
   font-weight: 600;
   font-display: swap;
   src: url("assets/fonts/poppins-latin-600-normal.woff2") format("woff2");
+
 }
-/* Muuttujat ja perusasetukset */
 :root {
   --arrow-size: 3.25rem;
   --capsule-size: 1.7rem;
@@ -38,7 +45,16 @@
   --white: #fff;
   --line: #dedede;
   --content: 1200px;
+  --radius-card: 12px;
+  --surface-card: #f1f1ef;
 }
+
+/* ==========================================
+   02. PERUSTYYLIT JA YHTEISET KOMPONENTIT
+   Flexbox kohdistaa yhden rivin tai pinon. Grid jakaa kaksiulotteisen sisällön
+   palstoihin. min-width: 0 sallii pitkän sisällön kutistumisen ruudukossa.
+   Hover on hiirivihje; focus-visible näyttää näppäimistön kohdistuksen.
+========================================== */
 * {
   box-sizing: border-box;
 }
@@ -47,10 +63,10 @@ html {
   scroll-padding-top: 88px;
 }
 body {
-  margin: 0;
+  margin: 0px;
   color: var(--ink);
   background: var(--white);
-  font-family: "Poppins", Arial, sans-serif;
+  font-family: Poppins, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.65;
 }
@@ -73,7 +89,7 @@ h1,
 h2,
 h3,
 p {
-  margin: 0;
+  margin: 0px;
 }
 h2 {
   font-size: clamp(30px, 3.2vw, 46px);
@@ -97,7 +113,7 @@ summary {
 a:focus-visible,
 button:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #495acc;
+  outline: rgb(73, 90, 204) solid 3px;
   outline-offset: 6px;
 }
 a:hover {
@@ -106,13 +122,12 @@ a:hover {
 [hidden] {
   display: none !important;
 }
-/* Sisältöleveydet ja yhteiset komponentit */
 .container {
   width: min(var(--content), calc(100% - 96px));
   margin-inline: auto;
 }
 .section {
-  padding: 100px 0;
+  padding: 100px 0px;
 }
 .eyebrow {
   font-size: 12px;
@@ -124,10 +139,12 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 25px;
-  border: 0;
-  border-bottom: 1px solid currentColor;
+  border-width: 0px 0px 1px;
+  border-style: none none solid;
+  border-color: currentcolor;
+  border-image: none;
   background: none;
-  padding: 9px 0;
+  padding: 9px 0px;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.6;
@@ -151,9 +168,70 @@ a:hover {
   opacity: 1;
   pointer-events: auto;
 }
-/* Header ja navigaatio */
+.spark {
+  font-size: 34px;
+}
+.round-arrow {
+  display: grid;
+  place-items: center;
+  background: rgb(32, 32, 32);
+  color: white;
+  border-radius: 50%;
+  width: var(--arrow-size);
+  aspect-ratio: 1 / 1;
+  border: 0px;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  font-size: 24px;
+}
+.arrow-icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  stroke: currentcolor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s;
+}
+.round-arrow .arrow-icon {
+  width: 48%;
+  height: 48%;
+}
+a:hover .arrow-icon,
+button:hover .arrow-icon {
+  transform: translate(0.08em, -0.08em);
+}
+.round-arrow:hover,
+a:hover .round-arrow {
+  background-color: rgb(73, 73, 73);
+}
+.about-grid > *,
+.cards-grid > *,
+.section-top > *,
+.experience-content > * {
+  min-width: 0px;
+}
+.spark,
+.section-spark {
+  display: inline-block;
+  width: 1em;
+  aspect-ratio: 1 / 1;
+  background: currentcolor;
+  clip-path: polygon(50% 0px, 58% 30%, 85% 15%, 70% 42%, 100% 50%, 70% 58%, 85% 85%, 58% 70%, 50% 100%, 42% 70%, 15% 85%, 30% 58%, 0px 50%, 30% 42%, 15% 15%, 42% 30%);
+}
+.section-spark {
+  vertical-align: -0.1em;
+}
+
+/* ==========================================
+   03. HEADER JA NAVIGAATIO
+   Flexbox pitää tunnuksen, navigaation ja toimintolinkin samalla rivillä.
+========================================== */
 .site-header {
-  background: #f4f4f4;
+  background: rgb(244, 244, 244);
 }
 .header-inner {
   display: flex;
@@ -182,7 +260,19 @@ a:hover {
 .menu-toggle {
   display: none;
 }
-/* Hero ja tilastot */
+.text-link,
+.menu-toggle,
+.footer nav a,
+.article-body summary {
+  min-height: 44px;
+}
+
+/* ==========================================
+   04. HERO
+   relative luo kuvalle asemointikehyksen; absolute irrottaa kuvan normaalista
+   virrasta. clamp(minimi, joustava arvo, maksimi) skaalautuu hallitusti.
+   Transform liikuttaa kuvaa ja otsikkoa muuttamatta ympäröivää layoutia.
+========================================== */
 .hero {
   background: var(--surface);
   overflow: hidden;
@@ -204,7 +294,8 @@ a:hover {
   font-weight: 300;
   letter-spacing: -0.095em;
   line-height: 1.1;
-  margin: 44px 0 0 -10px;
+  margin: 44px 0px 0px -10px;
+  transform: translate(var(--title-x, 0px), var(--title-y, 0px));
 }
 .hero-intro {
   color: var(--ink);
@@ -212,16 +303,17 @@ a:hover {
 }
 .hero-portrait {
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
   right: -35px;
   width: 58%;
-  aspect-ratio: 1160 / 1024;
   overflow: hidden;
   mix-blend-mode: multiply;
+  aspect-ratio: 1 / 1;
+  transform: translate(var(--portrait-x, 0px), var(--portrait-y, 0px));
 }
 .hero-rail {
   position: absolute;
-  left: 0;
+  left: 0px;
   top: 90px;
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -256,14 +348,58 @@ a:hover {
   font-size: 11px;
   margin-top: 100px;
 }
-/* About Me ja sisältökortit */
+.hero-portrait-image {
+  width: 100%;
+  bottom: 0px;
+  position: static;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+.stats .counter {
+  display: inline;
+  color: inherit;
+  font-style: inherit;
+  font-variant-ligatures: inherit;
+  font-variant-caps: inherit;
+  font-variant-east-asian: inherit;
+  font-variant-alternates: inherit;
+  font-variant-position: inherit;
+  font-variant-emoji: inherit;
+  font-weight: inherit;
+  font-stretch: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  font-optical-sizing: inherit;
+  font-size-adjust: inherit;
+  font-kerning: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-language-override: inherit;
+  margin: 0px;
+  font-variant-numeric: tabular-nums;
+}
+.hero h1,
+.hero-portrait {
+  transition: transform 180ms ease-out;
+}
+.hero h1.hero-reveal {
+  animation: 900ms ease-out 0s 1 normal both running hello-reveal;
+}
+
+/* ==========================================
+   05. ABOUT ME
+   Grid muodostaa desktopin kolme palstaa. object-fit: cover täyttää
+   kuvakehyksen venyttämättä; object-position valitsee näkyvän rajauksen.
+========================================== */
 .about {
-  background: #fafafa;
+  background: rgb(248, 248, 246);
 }
 .about-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr 1.1fr;
-  gap: 70px;
+  gap: clamp(24px, 4vw, 58px);
 }
 .about-intro h2 {
   margin-bottom: 24px;
@@ -275,20 +411,18 @@ a:hover {
   display: block;
   width: 10.625rem;
   height: auto;
-  aspect-ratio: 4/3;
-  margin: 3rem auto 0;
-  stroke: currentColor;
+  aspect-ratio: 4 / 3;
+  margin: 3rem auto 0px;
+  stroke: currentcolor;
   stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0.1;
 }
 .metric-card {
-  background: white;
   padding: 22px;
-}
-.spark {
-  font-size: 34px;
+  background: var(--surface-card);
+  border-radius: var(--radius-card);
 }
 .metric-card strong {
   display: block;
@@ -299,10 +433,10 @@ a:hover {
 }
 .metric-card p {
   font-size: 12px;
-  margin: 8px 0 25px;
+  margin: 8px 0px 25px;
 }
 .metric-card img {
-  aspect-ratio: 1/0.95;
+  aspect-ratio: 1 / 0.95;
   object-position: 50% 20%;
   filter: grayscale(1);
 }
@@ -311,7 +445,7 @@ a:hover {
   height: 130px;
   object-position: 50% 22%;
   filter: grayscale(1);
-  margin: 0 0 30px 28px;
+  margin: 0px 0px 30px 28px;
 }
 .icon-paragraph {
   position: relative;
@@ -321,81 +455,117 @@ a:hover {
 }
 .icon-paragraph span {
   position: absolute;
-  left: 0;
-  top: 0;
+  left: 0px;
+  top: 0px;
   color: var(--ink);
   font-size: 20px;
 }
-/* Projektinostot ja nuolipainikkeet */
+.metric-card > img:not(.metric-globe),
+.small-portrait {
+  border-radius: var(--radius-card);
+  object-position: center 25%;
+}
+.metric-card .metric-globe {
+  display: block;
+  width: 34px;
+  height: 34px;
+  min-height: 0px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  margin-bottom: 12px;
+  mix-blend-mode: multiply;
+}
+.about-detail {
+  padding: 22px;
+  background: white;
+  border-radius: var(--radius-card);
+}
+
+/* ==========================================
+   06. SHOWCASE-KARUSELLI
+   Flex-kortit ylittävät kehyksen vain tämän alueen sisällä. overflow-x: auto
+   sallii natiivin vierityksen; scroll-snap-align kohdistaa kortin keskelle.
+   Logo säilyttää kuvasuhteensa erillään kortin kuvatekstistä.
+========================================== */
 .showcase {
   overflow: hidden;
-  background: #fafafa;
-  padding: 0 0 90px;
+  background: rgb(250, 250, 250);
+  padding: 0px 0px 90px;
 }
 .showcase-grid {
-  display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  width: 118%;
   margin-left: -9%;
-}
-.project-image {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 1.23;
-  background: #e5e5e5;
-}
-.project-image img {
-  height: 100%;
-  transition: transform 0.5s;
-}
-.project:hover img {
-  transform: scale(1.035);
-}
-.project:hover {
-  opacity: 1;
-}
-.round-arrow {
-  display: grid;
-  place-items: center;
-  background: #202020;
-  color: white;
-  border-radius: 50%;
-  width: var(--arrow-size);
-  aspect-ratio: 1;
-  border: 0;
-  transition: background-color 0.2s ease;
-  flex-shrink: 0;
-  font-size: 24px;
-}
-.project-image .round-arrow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.25s;
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  margin: 0px;
+  padding: 6px 24px 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(119, 119, 119) rgb(222, 222, 222);
 }
 .project:hover .round-arrow,
 .project:focus-visible .round-arrow,
 .showcase .project:nth-child(2) .round-arrow {
   opacity: 1;
 }
-.project-caption {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 15px;
-}
-.project-caption > span {
-  font-size: 10px;
-  white-space: nowrap;
-}
 .showcase .project-caption {
   padding-inline: 8px;
 }
-/* Experience ja natiivi accordion */
+.showcase .project {
+  flex: 0 0 42%;
+  min-width: 0px;
+  scroll-snap-align: center;
+}
+.showcase .project-image {
+  border-radius: var(--radius-card);
+}
+.showcase-grid:focus-visible,
+.showcase-position:focus-visible {
+  outline: rgb(73, 90, 204) solid 3px;
+  outline-offset: -3px;
+}
+.showcase-controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  max-width: 500px;
+  margin-top: 14px;
+}
+.showcase-controls button {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+}
+.showcase-controls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.showcase-position {
+  flex: 1 1 0%;
+  min-width: 0px;
+  height: 44px;
+  accent-color: var(--ink);
+  cursor: ew-resize;
+}
+.client-logo {
+  width: 94px;
+  height: auto;
+  object-fit: contain;
+  flex: 0 0 auto;
+  mix-blend-mode: multiply;
+}
+
+/* ==========================================
+   07. EXPERIENCES / ACCORDION
+   details/summary hoitaa avautumisen semantiikan. [open] muotoilee
+   selaimen ylläpitämän tilan; plus näkyy myös ilman hoveria.
+========================================== */
 .section-top {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -423,7 +593,8 @@ a:hover {
   grid-template-columns: 1.2fr 1fr auto 20px;
   align-items: center;
   gap: 24px;
-  padding: 25px 0;
+  padding: 25px 0px;
+  transition: background-color 180ms, color 180ms;
 }
 .experience-item summary::-webkit-details-marker {
   display: none;
@@ -438,7 +609,7 @@ a:hover {
   color: var(--muted);
   margin-top: 7px;
 }
-.experience-item summary small:before {
+.experience-item summary small::before {
   content: "✦";
   margin-right: 10px;
 }
@@ -472,7 +643,7 @@ a:hover {
   grid-template-columns: 1.2fr 1fr auto;
   gap: 30px;
   align-items: center;
-  padding: 0 44px 28px 0;
+  padding: 0px 44px 28px 0px;
 }
 .experience-content > img {
   height: 160px;
@@ -488,9 +659,34 @@ a:hover {
 .journey-images img {
   height: 140px;
 }
-/* Konsultaatio-CTA */
+.project-image,
+.experience-content img {
+  border-radius: var(--radius-card);
+}
+.experience-item summary:hover,
+.experience-item summary:focus-visible {
+  background: rgb(243, 243, 241);
+}
+.experience-item summary:hover .exp-toggle {
+  transform: rotate(90deg);
+}
+.experience-item[open] summary {
+  background: rgb(248, 248, 246);
+}
+.experience-item[open] summary .exp-toggle {
+  transform: rotate(45deg);
+}
+.experience-item[open] .experience-content {
+  animation: 250ms ease-out 0s 1 normal none running content-reveal;
+}
+
+/* ==========================================
+   08. WINTER DEAL
+   Absoluuttinen kuva peittää tumman kortin. opacity tekee overlayn
+   tummaa pohjaa vasten, mutta relative-tekstikerros pysyy täysin näkyvänä.
+========================================== */
 .offer-section {
-  padding: 0 0 100px;
+  padding: 0px 0px 100px;
 }
 .offer {
   position: relative;
@@ -504,7 +700,7 @@ a:hover {
 }
 .offer > img {
   position: absolute;
-  inset: 0;
+  inset: 0px;
   height: 100%;
   opacity: 0.28;
   filter: grayscale(1);
@@ -513,6 +709,7 @@ a:hover {
   position: relative;
   padding: 45px 24px;
   color: white;
+  max-width: 860px;
 }
 .offer h2 {
   font-size: clamp(25px, 3vw, 40px);
@@ -523,7 +720,58 @@ a:hover {
   color: white;
   margin-top: 22px;
 }
-/* Portfolio ja blogikortit */
+.offer-eyebrow {
+  color: white;
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+.offer-description {
+  color: rgb(238, 238, 238);
+  max-width: 620px;
+  margin: 18px auto 0px;
+  font-size: 13px;
+}
+
+/* ==========================================
+   09. LATEST WORKS
+   Kortin aspect-ratio varaa kuvalle tilan jo ennen latausta.
+   overflow: hidden rajaa kuvan hover-suurennuksen kortin kehykseen.
+========================================== */
+.project-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1.23 / 1;
+  background: rgb(229, 229, 229);
+}
+.project-image img {
+  height: 100%;
+  transition: transform 0.5s;
+}
+.project:hover img {
+  transform: scale(1.035);
+}
+.project:hover {
+  opacity: 1;
+}
+.project-image .round-arrow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.project-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+}
+.project-caption > span {
+  font-size: 10px;
+  white-space: nowrap;
+}
 .works,
 .blog {
   background: var(--surface);
@@ -534,11 +782,11 @@ a:hover {
 }
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0px, 1fr));
   gap: 24px;
 }
 .works .project-image {
-  aspect-ratio: 1.2;
+  aspect-ratio: 1.2 / 1;
 }
 .project-type {
   font-size: 10px;
@@ -551,15 +799,82 @@ a:hover {
 .more-projects {
   margin-top: 32px;
 }
+.portfolio-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  max-width: 100%;
+  padding: 0.3em 1em 0.3em 0.3em;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.portfolio-capsule > span:last-child {
+  min-width: 0px;
+}
+.capsule-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 var(--capsule-size);
+  width: var(--capsule-size);
+  aspect-ratio: 1 / 1;
+  background: var(--ink);
+  color: var(--white);
+  border-radius: 50%;
+}
+.capsule-mark > span {
+  width: 55%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid;
+  border-radius: 50%;
+  position: relative;
+}
+.capsule-mark > span::before,
+.capsule-mark > span::after {
+  content: "";
+  position: absolute;
+  inset: 0px 25%;
+  border-inline: 1px solid;
+  border-radius: 50%;
+}
+.capsule-mark > span::after {
+  inset: 45% 0px;
+  border-width: 1px 0px 0px;
+  border-style: solid none none;
+  border-color: currentcolor;
+  border-image: none;
+  border-radius: 0px;
+}
+.project-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+.project-footer .project-type {
+  margin: 0px;
+}
+.project:focus-visible .project-image img {
+  transform: scale(1.035);
+}
+
+/* ==========================================
+   10. BLOGIT
+   Kuvan kehys leikkaa skaalausta; focus-within korostaa korttia,
+   kun sen sisällä oleva Read insight saa näppäimistökohdistuksen.
+========================================== */
 .blog {
   padding-top: 20px;
 }
 .article-card {
   background: white;
   align-self: start;
-}
-.article-card > img {
-  aspect-ratio: 1.5;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  transition: transform 220ms, box-shadow 220ms;
 }
 .article-body {
   padding: 22px;
@@ -590,28 +905,47 @@ a:hover {
   font-size: 12px;
   margin-top: 16px;
 }
-/* Yhteydenotto ja footer */
+.article-image {
+  overflow: hidden;
+  aspect-ratio: 1.5 / 1;
+}
+.article-image img {
+  height: 100%;
+  transition: transform 350ms;
+}
+.article-card:hover,
+.article-card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 12px 26px;
+}
+.article-card:hover .article-image img,
+.article-card:focus-within .article-image img {
+  transform: scale(1.04);
+}
+.article-card:hover .arrow-icon,
+.article-card:focus-within .arrow-icon {
+  transform: translate(2px, -2px);
+}
+
+/* ==========================================
+   11. CONTACT JA FOOTER
+   Footerin koriste on CSS-geometriaa. Pitkä sähköpostiosoite saa rivittyä.
+========================================== */
 .contact {
-  background: #ececec;
+  background: rgb(236, 236, 236);
   text-align: center;
 }
 .contact h2 {
   font-size: clamp(28px, 3vw, 42px);
 }
 .contact p:not(.eyebrow) {
-  margin: 20px 0;
+  margin: 20px 0px;
   font-size: 13px;
 }
 .footer {
-  background: #202020;
+  background: linear-gradient(90deg, transparent 63%, rgba(255, 255, 255, 0.19) 63%, rgba(255, 255, 255, 0.19) 65%, transparent 65%) left bottom / 240px auto no-repeat, linear-gradient(0deg, transparent 63%, rgba(255, 255, 255, 0.19) 63%, rgba(255, 255, 255, 0.19) 65%, transparent 65%) rgb(32, 32, 32);
   color: white;
-  padding: 56px 0 26px;
-  background-image:
-    linear-gradient(90deg, transparent 63%, #ffffff30 63% 65%, transparent 65%),
-    linear-gradient(0deg, transparent 63%, #ffffff30 63% 65%, transparent 65%);
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  background-size: 240px;
+  padding: 56px 0px 26px;
 }
 .footer-top {
   display: flex;
@@ -634,106 +968,25 @@ a:hover {
   font-size: 0.7em;
 }
 .footer-bottom {
-  border-top: 1px solid #494949;
+  border-top: 1px solid rgb(73, 73, 73);
   display: flex;
   justify-content: space-between;
   margin-top: 42px;
   padding-top: 24px;
   font-size: 10px;
-  color: #bbb;
+  color: rgb(187, 187, 187);
 }
-/* Shared editable icons, labels and portfolio capsule */
-.arrow-icon {
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  vertical-align: middle;
-  flex-shrink: 0;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: transform 0.2s ease;
-}
-.round-arrow .arrow-icon {
-  width: 48%;
-  height: 48%;
-}
-a:hover .arrow-icon,
-button:hover .arrow-icon {
-  transform: translate(0.08em, -0.08em);
-}
-.round-arrow:hover,
-a:hover .round-arrow {
-  background-color: #494949;
-}
-.portfolio-capsule {
+.footer nav a {
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
-  max-width: 100%;
-  padding: 0.3em 1em 0.3em 0.3em;
-  border: 1px solid var(--ink);
-  border-radius: var(--radius-pill);
-  line-height: 1.4;
-  text-align: left;
-  overflow-wrap: anywhere;
-}
-.portfolio-capsule > span:last-child {
-  min-width: 0;
-}
-.capsule-mark {
-  display: grid;
-  place-items: center;
-  flex: 0 0 var(--capsule-size);
-  width: var(--capsule-size);
-  aspect-ratio: 1;
-  background: var(--ink);
-  color: var(--white);
-  border-radius: 50%;
-}
-.capsule-mark > span {
-  width: 55%;
-  aspect-ratio: 1;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  position: relative;
-}
-.capsule-mark > span::before,
-.capsule-mark > span::after {
-  content: "";
-  position: absolute;
-  inset: 0 25%;
-  border-inline: 1px solid currentColor;
-  border-radius: 50%;
-}
-.capsule-mark > span::after {
-  inset: 45% 0;
-  border: 0;
-  border-top: 1px solid currentColor;
-  border-radius: 0;
-}
-.client-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-}
-.client-label::before {
-  content: "";
-  width: 0.55em;
-  aspect-ratio: 1;
-  background: currentColor;
-  border-radius: 50%;
-}
-/* Allow intrinsic grid content and long labels to shrink without clipping. */
-.about-grid > *,
-.cards-grid > *,
-.section-top > *,
-.experience-content > * {
-  min-width: 0;
 }
 
-/* Suuret näytöt */
+/* ==========================================
+   12. RESPONSIIVISUUS
+   Media query rajaa sääntöjen vaikutuksen selainikkunan leveyden mukaan.
+   Perustyyli on desktop; tabletin ja mobiilin poikkeukset seuraavat tässä
+   samassa järjestyksessä. Sisempi img rajautuu, eikä veny.
+========================================== */
 @media (min-width: 1500px) {
   .hero-inner {
     min-height: 720px;
@@ -742,16 +995,12 @@ a:hover .round-arrow {
     max-height: 710px;
   }
 }
-/* Tabletti */
 @media (max-width: 1000px) {
   .container {
     width: calc(100% - 56px);
   }
   .header-inner {
     gap: 35px;
-  }
-  .about-grid {
-    gap: 30px;
   }
   .hero-copy {
     padding-left: 40px;
@@ -791,8 +1040,14 @@ a:hover .round-arrow {
     align-items: start;
     flex-direction: column;
   }
+  .project-caption {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .project-footer {
+    flex-wrap: wrap;
+  }
 }
-/* Mobiili */
 @media (max-width: 700px) {
   :root {
     --arrow-size: 2.75rem;
@@ -804,7 +1059,7 @@ a:hover .round-arrow {
     width: calc(100% - 40px);
   }
   .section {
-    padding: 64px 0;
+    padding: 64px 0px;
   }
   h2 {
     font-size: 32px;
@@ -833,9 +1088,9 @@ a:hover .round-arrow {
     gap: 12px;
     margin-left: auto;
     background: none;
-    border: 0;
+    border: 0px;
     font-size: 12px;
-    padding: 10px 0;
+    padding: 10px 0px;
   }
   .site-header nav {
     display: none;
@@ -844,10 +1099,10 @@ a:hover .round-arrow {
     left: -20px;
     right: -20px;
     padding: 20px;
-    background: #f4f4f4;
+    background: rgb(244, 244, 244);
     z-index: 10;
     border-top: 1px solid var(--line);
-    box-shadow: 0 8px 8px #00000008;
+    box-shadow: rgba(0, 0, 0, 0.03) 0px 8px 8px;
   }
   .site-header nav.is-open {
     display: grid;
@@ -855,7 +1110,7 @@ a:hover .round-arrow {
     gap: 6px 22px;
   }
   .site-header nav a {
-    padding: 12px 0;
+    padding: 12px 0px;
   }
   .hero-inner {
     min-height: 730px;
@@ -864,7 +1119,7 @@ a:hover .round-arrow {
   }
   .hero-copy {
     width: 100%;
-    padding-left: 0;
+    padding-left: 0px;
   }
   .hero-rail {
     display: none;
@@ -882,7 +1137,7 @@ a:hover .round-arrow {
     font-size: clamp(112px, 34vw, 165px);
     letter-spacing: -0.09em;
     line-height: 1.12;
-    margin: 27px 0 0 -7px;
+    margin: 27px 0px 0px -7px;
   }
   .hero-intro {
     font-size: 12px;
@@ -896,17 +1151,16 @@ a:hover .round-arrow {
   .scroll-link {
     position: absolute;
     top: 608px;
-    left: 0;
-    margin: 0;
+    left: 0px;
+    margin: 0px;
     font-size: 10px;
     gap: 13px;
     z-index: 2;
-    background: #f4f4f4dd;
+    background: rgba(244, 244, 244, 0.867);
     padding: 10px;
   }
   .about-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
   }
   .about-intro p {
     max-width: 500px;
@@ -917,28 +1171,24 @@ a:hover .round-arrow {
   .metric-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0 20px;
+    gap: 0px 20px;
     padding: 22px;
   }
   .metric-card .spark {
-    grid-column: 1;
-    grid-row: 1;
+    grid-area: 1 / 1;
     font-size: 30px;
   }
   .metric-card strong {
-    grid-column: 1;
-    grid-row: 2;
+    grid-area: 2 / 1;
     font-size: 43px;
   }
   .metric-card p {
-    grid-column: 1;
-    grid-row: 3;
-    margin: 8px 0 0;
+    grid-area: 3 / 1;
+    margin: 8px 0px 0px;
     font-size: 10px;
   }
   .metric-card img {
-    grid-column: 2;
-    grid-row: 1/4;
+    grid-area: 1 / 2 / 4;
     height: 100%;
     min-height: 190px;
     aspect-ratio: auto;
@@ -947,7 +1197,7 @@ a:hover .round-arrow {
   .small-portrait {
     width: 130px;
     height: 110px;
-    margin: 0 0 24px 28px;
+    margin: 0px 0px 24px 28px;
   }
   .about-detail {
     display: grid;
@@ -966,18 +1216,18 @@ a:hover .round-arrow {
     scroll-snap-type: x mandatory;
     gap: 14px;
     width: auto;
-    margin: 0;
-    padding: 0 20px 14px;
+    margin: 0px;
+    padding: 6px 20px 24px;
   }
   .showcase .project {
     flex: 0 0 85%;
     scroll-snap-align: center;
   }
   .showcase .project-image {
-    aspect-ratio: 1.1;
+    aspect-ratio: 1.1 / 1;
   }
   .showcase .project-caption {
-    padding: 0;
+    padding: 0px;
   }
   .project-caption h3 {
     font-size: 12px;
@@ -991,7 +1241,7 @@ a:hover .round-arrow {
     margin-bottom: 32px;
   }
   .section-description {
-    padding: 0;
+    padding: 0px;
   }
   .section-description p {
     font-size: 12px;
@@ -999,7 +1249,7 @@ a:hover .round-arrow {
   .experience-item summary {
     grid-template-columns: 1fr 20px;
     gap: 10px;
-    padding: 22px 0;
+    padding: 22px 0px;
   }
   .experience-item summary strong {
     font-size: 14px;
@@ -1012,14 +1262,13 @@ a:hover .round-arrow {
     font-size: 9px;
   }
   .exp-toggle {
-    grid-column: 2;
-    grid-row: 1/3;
+    grid-area: 1 / 2 / 3;
     text-align: right;
   }
   .experience-content {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 0 0 25px;
+    padding: 0px 0px 25px;
   }
   .journey-images img {
     height: 110px;
@@ -1046,7 +1295,7 @@ a:hover .round-arrow {
     gap: 32px;
   }
   .works .project-image {
-    aspect-ratio: 1.3;
+    aspect-ratio: 1.3 / 1;
   }
   .project-image .round-arrow {
     opacity: 1;
@@ -1059,10 +1308,10 @@ a:hover .round-arrow {
     margin-bottom: 32px;
   }
   .blog {
-    padding-top: 0;
+    padding-top: 0px;
   }
   .article-card > img {
-    aspect-ratio: 1.55;
+    aspect-ratio: 1.55 / 1;
   }
   .article-body h3 {
     font-size: 19px;
@@ -1079,7 +1328,7 @@ a:hover .round-arrow {
     display: none;
   }
   .footer {
-    padding: 40px 0 24px;
+    padding: 40px 0px 24px;
   }
   .footer-top {
     gap: 28px;
@@ -1101,66 +1350,47 @@ a:hover .round-arrow {
   .footer-bottom span {
     max-width: 175px;
   }
-}
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  .showcase-grid {
+    gap: 14px;
+    padding-inline: 20px;
   }
-  *,
-  *:before,
-  *:after {
-    transition: none !important;
-    animation: none !important;
+  .showcase .project {
+    flex-basis: 85%;
   }
-}
-
-/* Rajaa hero-kuvan yläreunan kuvakaappauspalkki pois, säilytä alkuperäinen tiedosto. */
-.hero-portrait-image {
-  width: 100%;
-  height: auto;
-  position: absolute;
-  bottom: 0;
-}
-/* Yksivärinen CSS-koriste ei riipu käyttöjärjestelmän emojiulkoasusta. */
-.spark,
-.section-spark {
-  display: inline-block;
-  width: 1em;
-  aspect-ratio: 1;
-  background: currentColor;
-  clip-path: polygon(
-    50% 0,
-    58% 30%,
-    85% 15%,
-    70% 42%,
-    100% 50%,
-    70% 58%,
-    85% 85%,
-    58% 70%,
-    50% 100%,
-    42% 70%,
-    15% 85%,
-    30% 58%,
-    0 50%,
-    30% 42%,
-    15% 15%,
-    42% 30%
-  );
-}
-.section-spark {
-  vertical-align: -0.1em;
-}
-
-/* Kosketuskohteet ja kuvakkeiden näkyvyys ilman hoveria. */
-.text-link,
-.menu-toggle,
-.footer nav a,
-.article-body summary {
-  min-height: 44px;
-}
-.footer nav a {
-  display: inline-flex;
-  align-items: center;
+  .metric-card .metric-globe {
+    grid-area: 1 / 1;
+  }
+  .metric-card > img:not(.metric-globe) {
+    grid-area: 1 / 2 / 4;
+  }
+  .metric-card {
+    gap: 0px 12px;
+    padding: 18px;
+  }
+  .metric-card strong {
+    font-size: clamp(32px, 10vw, 43px);
+  }
+  .metric-card p {
+    font-size: 11px;
+  }
+  .metric-card > img:not(.metric-globe) {
+    min-height: 170px;
+  }
+  .about-detail {
+    padding: 20px;
+  }
+  .offer-copy {
+    padding: 32px 20px;
+  }
+  .offer-description {
+    font-size: 12px;
+  }
+  .offer-eyebrow {
+    font-size: 11px;
+  }
+  .project-footer {
+    flex-wrap: nowrap;
+  }
 }
 @media (hover: none) {
   .project-image .round-arrow {
@@ -1168,124 +1398,36 @@ a:hover .round-arrow {
   }
 }
 
-/* Final interaction pass: native scrolling and HTML content remain available without JS. */
-:root {
-  --radius-card: 12px;
-  --surface-card: #f1f1ef;
-}
-.stats .counter {
-  display: inline;
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  font-variant-numeric: tabular-nums;
-}
-.hero-portrait { aspect-ratio: 1; }
-.hero-portrait-image {
-  position: static;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-.hero h1 { transform: translate(var(--title-x, 0px), var(--title-y, 0px)); }
-.hero-portrait { transform: translate(var(--portrait-x, 0px), var(--portrait-y, 0px)); }
-.hero h1, .hero-portrait { transition: transform 180ms ease-out; }
-.hero h1.hero-reveal { animation: hello-reveal 900ms ease-out both; }
+/* ==========================================
+   13. ANIMAATIOT JA REDUCED MOTION
+   Keyframes määrittää alku- ja lopputilan. prefers-reduced-motion
+   kunnioittaa käyttäjän käyttöjärjestelmässä valitsemaa vähennettyä liikettä.
+   JavaScript tarkistaa saman asetuksen parallaxia ja laskureita varten.
+========================================== */
 @keyframes hello-reveal {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0); }
+  0% { clip-path: inset(0px 100% 0px 0px); }
+  100% { clip-path: inset(0px); }
 }
-.about { background: #f8f8f6; }
-.about-grid { gap: clamp(24px, 4vw, 58px); }
-.metric-card { background: var(--surface-card); border-radius: var(--radius-card); }
-.metric-card > img:not(.metric-globe), .small-portrait {
-  border-radius: var(--radius-card);
-  object-position: center 25%;
-}
-.metric-card .metric-globe {
-  display: block;
-  width: 34px;
-  height: 34px;
-  min-height: 0;
-  aspect-ratio: 1;
-  object-fit: contain;
-  margin-bottom: 12px;
-  mix-blend-mode: multiply;
-}
-.about-detail { padding: 22px; background: white; border-radius: var(--radius-card); }
-.showcase-grid {
-  display: flex;
-  gap: 24px;
-  width: 100%;
-  margin: 0;
-  padding: 6px 24px 24px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: thin;
-  scrollbar-color: #777 #dedede;
-}
-.showcase .project { flex: 0 0 42%; min-width: 0; scroll-snap-align: center; }
-.showcase .project-image { border-radius: var(--radius-card); }
-.showcase-grid:focus-visible, .showcase-position:focus-visible {
-  outline: 3px solid #495acc;
-  outline-offset: -3px;
-}
-.showcase-controls { display: flex; gap: 20px; align-items: center; max-width: 500px; margin-top: 14px; }
-.showcase-controls button {
-  border: 1px solid var(--line);
-  background: white;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-}
-.showcase-controls button:disabled { opacity: .35; cursor: default; }
-.showcase-position { flex: 1; min-width: 0; height: 44px; accent-color: var(--ink); cursor: ew-resize; }
-.client-logo { width: 94px; height: auto; object-fit: contain; flex: 0 0 auto; mix-blend-mode: multiply; }
-.project-footer { display: flex; gap: 12px; justify-content: space-between; align-items: center; margin-top: 6px; }
-.project-footer .project-type { margin: 0; }
-.project-image, .experience-content img { border-radius: var(--radius-card); }
-.project:focus-visible .project-image img { transform: scale(1.035); }
-.experience-item summary { transition: background-color 180ms ease, color 180ms ease; }
-.experience-item summary:hover, .experience-item summary:focus-visible { background: #f3f3f1; }
-.experience-item summary:hover .exp-toggle { transform: rotate(90deg); }
-.experience-item[open] summary { background: #f8f8f6; }
-.experience-item[open] summary .exp-toggle { transform: rotate(45deg); }
-.experience-item[open] .experience-content { animation: content-reveal 250ms ease-out; }
 @keyframes content-reveal {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.offer-eyebrow { color: white; font-size: 12px; margin-bottom: 14px; }
-.offer-description { color: #eee; max-width: 620px; margin: 18px auto 0; font-size: 13px; }
-.offer-copy { max-width: 860px; }
-.article-card { overflow: hidden; border-radius: var(--radius-card); transition: transform 220ms ease, box-shadow 220ms ease; }
-.article-image { overflow: hidden; aspect-ratio: 1.5; }
-.article-image img { height: 100%; transition: transform 350ms ease; }
-.article-card:hover, .article-card:focus-within { transform: translateY(-4px); box-shadow: 0 12px 26px #0000000d; }
-.article-card:hover .article-image img, .article-card:focus-within .article-image img { transform: scale(1.04); }
-.article-card:hover .arrow-icon, .article-card:focus-within .arrow-icon { transform: translate(2px, -2px); }
-@media (max-width: 1000px) {
-  .project-caption { flex-wrap: wrap; gap: 6px; }
-  .project-footer { flex-wrap: wrap; }
-}
-@media (max-width: 700px) {
-  .showcase-grid { gap: 14px; padding-inline: 20px; }
-  .showcase .project { flex-basis: 85%; }
-  .metric-card .metric-globe { grid-column: 1; grid-row: 1; }
-  .metric-card > img:not(.metric-globe) { grid-column: 2; grid-row: 1/4; }
-  .metric-card { gap: 0 12px; padding: 18px; }
-  .metric-card strong { font-size: clamp(32px, 10vw, 43px); }
-  .metric-card p { font-size: 11px; }
-  .metric-card > img:not(.metric-globe) { min-height: 170px; }
-  .about-detail { padding: 20px; }
-  .offer-copy { padding: 32px 20px; }
-  .offer-description { font-size: 12px; }
-  .offer-eyebrow { font-size: 11px; }
-  .project-footer { flex-wrap: nowrap; }
+  0% { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 1; transform: translateY(0px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .showcase-grid { scroll-behavior: auto; }
-  .hero h1, .hero-portrait, .article-card { transform: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  ::before,
+  ::after {
+    transition: none !important;
+    animation: auto ease 0s 1 normal none running none !important;
+  }
+  .showcase-grid {
+    scroll-behavior: auto;
+  }
+  .hero h1,
+  .hero-portrait,
+  .article-card {
+    transform: none;
+  }
 }
