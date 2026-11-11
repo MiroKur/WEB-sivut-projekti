@@ -47,6 +47,24 @@
   --content: 1200px;
   --radius-card: 12px;
   --surface-card: #f1f1ef;
+  --about-background: #f8f8f6;
+  --contact-background: #ececec;
+  --space-0: 0px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-14: 14px;
+  --space-16: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-22: 22px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-44: 44px;
+  --space-48: 48px;
+  --space-64: 64px;
 }
 
 /* ==========================================
@@ -394,7 +412,7 @@ a:hover .round-arrow {
    kuvakehyksen venyttämättä; object-position valitsee näkyvän rajauksen.
 ========================================== */
 .about {
-  background: rgb(248, 248, 246);
+  background: var(--about-background);
 }
 .about-grid {
   display: grid;
@@ -671,7 +689,7 @@ a:hover .round-arrow {
   transform: rotate(90deg);
 }
 .experience-item[open] summary {
-  background: rgb(248, 248, 246);
+  background: var(--about-background);
 }
 .experience-item[open] summary .exp-toggle {
   transform: rotate(45deg);
@@ -932,7 +950,7 @@ a:hover .round-arrow {
    Footerin koriste on CSS-geometriaa. Pitkä sähköpostiosoite saa rivittyä.
 ========================================== */
 .contact {
-  background: rgb(236, 236, 236);
+  background: var(--contact-background);
   text-align: center;
 }
 .contact h2 {
@@ -1049,6 +1067,8 @@ a:hover .round-arrow {
   }
 }
 @media (max-width: 700px) {
+  /* Mobiili sommitellaan omaksi pinokseen: hero-kuva on normaalissa virrassa.
+     Kiinteän top-arvon sijaan scroll-linkki seuraa tekstin todellista korkeutta. */
   :root {
     --arrow-size: 2.75rem;
   }
@@ -1059,7 +1079,7 @@ a:hover .round-arrow {
     width: calc(100% - 40px);
   }
   .section {
-    padding: 64px 0px;
+    padding: var(--space-64) var(--space-0);
   }
   h2 {
     font-size: 32px;
@@ -1067,17 +1087,18 @@ a:hover .round-arrow {
   }
   .header-inner {
     height: 76px;
-    gap: 20px;
-    flex-wrap: wrap;
+    gap: var(--space-14);
+    flex-wrap: nowrap;
     position: relative;
   }
   .brand {
-    width: 34px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
   }
   .header-cta {
-    font-size: 11px;
-    gap: 10px;
+    font-size: 12px;
+    gap: var(--space-8);
   }
   .header-cta span {
     font-size: 20px;
@@ -1085,12 +1106,14 @@ a:hover .round-arrow {
   .menu-toggle {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-8);
     margin-left: auto;
     background: none;
     border: 0px;
-    font-size: 12px;
-    padding: 10px 0px;
+    font-size: 14px;
+    padding: 10px var(--space-0);
+    min-width: 76px;
+    justify-content: center;
   }
   .site-header nav {
     display: none;
@@ -1098,72 +1121,82 @@ a:hover .round-arrow {
     top: 76px;
     left: -20px;
     right: -20px;
-    padding: 20px;
+    padding: var(--space-20);
     background: rgb(244, 244, 244);
     z-index: 10;
     border-top: 1px solid var(--line);
     box-shadow: rgba(0, 0, 0, 0.03) 0px 8px 8px;
+    font-size: 14px;
   }
   .site-header nav.is-open {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px 22px;
+    gap: var(--space-6) var(--space-22);
   }
   .site-header nav a {
-    padding: 12px 0px;
+    padding: var(--space-12) var(--space-0);
+    min-height: 48px;
   }
   .hero-inner {
-    min-height: 730px;
-    display: block;
-    padding-top: 26px;
+    min-height: 0;
+    display: grid;
+    padding-top: var(--space-28);
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-20);
   }
   .hero-copy {
     width: 100%;
-    padding-left: 0px;
+    padding-left: var(--space-0);
   }
   .hero-rail {
     display: none;
   }
   .stats {
-    gap: 40px;
+    gap: var(--space-40);
   }
   .stats strong {
-    font-size: 30px;
+    font-size: 32px;
   }
   .stats span {
-    font-size: 9px;
+    font-size: 11px;
   }
   .hero h1 {
-    font-size: clamp(112px, 34vw, 165px);
+    font-size: clamp(108px, 34vw, 154px);
     letter-spacing: -0.09em;
     line-height: 1.12;
-    margin: 27px 0px 0px -7px;
+    margin: 24px 0 0 -4px;
   }
   .hero-intro {
-    font-size: 12px;
+    font-size: 13px;
   }
   .hero-portrait {
-    right: -15px;
+    right: auto;
     width: 100%;
-    max-height: 415px;
+    max-height: none;
     z-index: 0;
+    position: relative;
+    bottom: auto;
+    aspect-ratio: 1;
   }
   .scroll-link {
-    position: absolute;
-    top: 608px;
-    left: 0px;
-    margin: 0px;
-    font-size: 10px;
+    position: static;
+    top: auto;
+    left: auto;
+    margin: 20px 0 0;
+    font-size: 12px;
     gap: 13px;
     z-index: 2;
-    background: rgba(244, 244, 244, 0.867);
-    padding: 10px;
+    background: none;
+    padding: 0;
+    min-height: 44px;
   }
   .about-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-24);
   }
   .about-intro p {
     max-width: 500px;
+    font-size: 14px;
   }
   .curve {
     display: none;
@@ -1171,21 +1204,17 @@ a:hover .round-arrow {
   .metric-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0px 20px;
-    padding: 22px;
-  }
-  .metric-card .spark {
-    grid-area: 1 / 1;
-    font-size: 30px;
+    gap: var(--space-0) var(--space-12);
+    padding: var(--space-18);
   }
   .metric-card strong {
     grid-area: 2 / 1;
-    font-size: 43px;
+    font-size: clamp(32px, 10vw, 43px);
   }
   .metric-card p {
     grid-area: 3 / 1;
     margin: 8px 0px 0px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .metric-card img {
     grid-area: 1 / 2 / 4;
@@ -1202,9 +1231,10 @@ a:hover .round-arrow {
   .about-detail {
     display: grid;
     grid-template-columns: 1fr;
+    padding: var(--space-20);
   }
   .icon-paragraph {
-    font-size: 12px;
+    font-size: 14px;
     margin-top: 16px;
   }
   .showcase {
@@ -1214,61 +1244,74 @@ a:hover .round-arrow {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    gap: 14px;
+    gap: var(--space-14);
     width: auto;
     margin: 0px;
-    padding: 6px 20px 24px;
+    padding: var(--space-6) var(--space-20) var(--space-24);
+    padding-inline: 20px;
   }
   .showcase .project {
     flex: 0 0 85%;
     scroll-snap-align: center;
+    flex-basis: 85%;
   }
   .showcase .project-image {
     aspect-ratio: 1.1 / 1;
   }
   .showcase .project-caption {
-    padding: 0px;
+    padding: var(--space-0);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
   }
   .project-caption h3 {
-    font-size: 12px;
+    font-size: 14px;
   }
   .project-caption > span {
-    font-size: 9px;
+    font-size: 18px;
   }
   .section-top {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: var(--space-20);
     margin-bottom: 32px;
   }
   .section-description {
-    padding: 0px;
+    padding: var(--space-0);
   }
   .section-description p {
-    font-size: 12px;
+    font-size: 14px;
   }
   .experience-item summary {
-    grid-template-columns: 1fr 20px;
+    grid-template-columns: minmax(0, 1fr) 24px;
     gap: 10px;
-    padding: 22px 0px;
+    padding: var(--space-22) var(--space-0);
+    row-gap: var(--space-12);
   }
   .experience-item summary strong {
     font-size: 14px;
   }
   .job {
-    display: none;
+    display: block;
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 12px;
   }
   .tags {
     grid-column: 1;
-    font-size: 9px;
+    font-size: 11px;
+    grid-row: 3;
+    flex-wrap: wrap;
   }
   .exp-toggle {
-    grid-area: 1 / 2 / 3;
+    grid-area: 1 / 2 / 4;
     text-align: right;
+    align-self: start;
   }
   .experience-content {
     grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 0px 0px 25px;
+    gap: var(--space-20);
+    padding: var(--space-0) var(--space-0) 25px;
   }
   .journey-images img {
     height: 110px;
@@ -1284,7 +1327,7 @@ a:hover .round-arrow {
     border-radius: 4px;
   }
   .offer h2 {
-    font-size: 26px;
+    font-size: clamp(24px, 6.7vw, 29px);
     line-height: 1.3;
   }
   .offer h2 br {
@@ -1292,7 +1335,7 @@ a:hover .round-arrow {
   }
   .cards-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: var(--space-32);
   }
   .works .project-image {
     aspect-ratio: 1.3 / 1;
@@ -1301,17 +1344,11 @@ a:hover .round-arrow {
     opacity: 1;
     font-size: 22px;
   }
-  .project-caption h3 {
-    font-size: 14px;
-  }
   .center-heading {
     margin-bottom: 32px;
   }
   .blog {
-    padding-top: 0px;
-  }
-  .article-card > img {
-    aspect-ratio: 1.55 / 1;
+    padding-top: var(--space-0);
   }
   .article-body h3 {
     font-size: 19px;
@@ -1322,74 +1359,78 @@ a:hover .round-arrow {
     margin: auto;
   }
   .contact p:not(.eyebrow) {
-    font-size: 12px;
+    font-size: 14px;
   }
   .contact p br {
     display: none;
   }
   .footer {
-    padding: 40px 0px 24px;
+    padding: var(--space-40) var(--space-0) var(--space-24);
   }
   .footer-top {
-    gap: 28px;
+    gap: var(--space-28);
   }
   .footer nav {
-    gap: 22px;
+    gap: var(--space-12) var(--space-24);
     flex-wrap: wrap;
-    font-size: 11px;
+    font-size: 13px;
   }
   .email {
-    font-size: 31px;
+    font-size: clamp(25px, 7.5vw, 32px);
   }
   .footer-bottom {
-    gap: 20px;
+    gap: var(--space-20);
     align-items: start;
-    font-size: 9px;
+    font-size: 11px;
     margin-top: 30px;
   }
   .footer-bottom span {
     max-width: 175px;
-  }
-  .showcase-grid {
-    gap: 14px;
-    padding-inline: 20px;
-  }
-  .showcase .project {
-    flex-basis: 85%;
   }
   .metric-card .metric-globe {
     grid-area: 1 / 1;
   }
   .metric-card > img:not(.metric-globe) {
     grid-area: 1 / 2 / 4;
-  }
-  .metric-card {
-    gap: 0px 12px;
-    padding: 18px;
-  }
-  .metric-card strong {
-    font-size: clamp(32px, 10vw, 43px);
-  }
-  .metric-card p {
-    font-size: 11px;
-  }
-  .metric-card > img:not(.metric-globe) {
     min-height: 170px;
   }
-  .about-detail {
-    padding: 20px;
-  }
   .offer-copy {
-    padding: 32px 20px;
+    padding: var(--space-32) var(--space-20);
   }
   .offer-description {
-    font-size: 12px;
+    font-size: 13px;
   }
   .offer-eyebrow {
-    font-size: 11px;
+    font-size: 12px;
   }
   .project-footer {
     flex-wrap: nowrap;
+  }
+  .experience-item summary small {
+    font-size: 11px;
+  }
+  .experience-content p {
+    font-size: 14px;
+  }
+  .journey-images {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+  .project-type {
+    font-size: 11px;
+  }
+  .article-meta {
+    font-size: 11px;
+  }
+  .article-body summary {
+    font-size: 14px;
+    align-items: center;
+  }
+  .article-body details p {
+    font-size: 14px;
+  }
+  .text-link {
+    font-size: 14px;
   }
 }
 @media (hover: none) {

@@ -21,7 +21,7 @@ const output = process.env.SCREENSHOT_DIR || '/tmp/portfolio-check';
     });
     page.on('requestfailed', request => errors.push(request.url()));
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    for (const width of [320, 390, 768, 1024, 1440]) {
+    for (const width of [320, 360, 375, 390, 430, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
       await page.evaluate(async () => {
@@ -55,6 +55,8 @@ const output = process.env.SCREENSHOT_DIR || '/tmp/portfolio-check';
       assert(await page.locator('.skip-link').evaluate(element => element === document.activeElement), 'first Tab');
       await page.keyboard.press('Enter');
       if (width < 701) {
+        assert((await page.locator('.offer h2').innerText()).includes('Get a Free'), 'hidden line break preserves offer word boundary');
+        assert((await page.locator('.contact p:not(.eyebrow)').innerText()).includes('collaborations. Let’s'), 'hidden line break preserves contact word boundary');
         const menu = page.locator('.menu-toggle');
         await menu.focus();
         await page.keyboard.press('Enter');
@@ -188,14 +190,54 @@ const output = process.env.SCREENSHOT_DIR || '/tmp/portfolio-check';
     await plain.locator('.article-body summary').first().click();
     assert.notEqual(await plain.locator('.article-body details').first().getAttribute('open'), null);
     await noJS.close();
-    const touch = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
-    const mobile = await touch.newPage();
-    await mobile.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-    await mobile.mouse.move(250, 350);
-    assert.equal(await mobile.locator('.hero').evaluate(el => getComputedStyle(el).getPropertyValue('--portrait-x').trim()), '');
-    await mobile.locator('.menu-toggle').tap();
-    assert.equal(await mobile.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
-    await touch.close();
+    // Aitoja selainmoottorin kosketustapahtumia: ei scrollLeft-arvon simulointia.
+    for (const width of [320, 360, 375, 390, 430]) {
+      const touch = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width, height: 844 } });
+      const mobile = await touch.newPage();
+      mobile.on('pageerror', error => errors.push(error.message));
+      mobile.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+      await mobile.emulateMedia({ reducedMotion: 'reduce' });
+      await mobile.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
+      assert.equal(await mobile.locator('.hero').evaluate(el => getComputedStyle(el).getPropertyValue('--portrait-x').trim()), '');
+      assert(await mobile.evaluate(() => document.documentElement.scrollWidth === innerWidth), 'touch viewport overflow');
+      assert(await mobile.locator('.hero-portrait').evaluate(el => {
+        const copy = document.querySelector('.hero-copy').getBoundingClientRect();
+        return el.getBoundingClientRect().top >= copy.bottom;
+      }), 'mobile portrait follows copy without overlap');
+      for (const selector of ['.brand', '.menu-toggle', '.header-cta']) {
+        const rect = await mobile.locator(selector).boundingBox();
+        assert(rect.width >= 44 && rect.height >= 44, 'header touch target');
+      }
+      await mobile.locator('.menu-toggle').tap();
+      assert.equal(await mobile.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
+      await mobile.locator('#main-nav a').first().tap();
+      assert.equal(await mobile.locator('.menu-toggle').getAttribute('aria-expanded'), 'false');
+      const slider = mobile.locator('#showcase-track');
+      await slider.scrollIntoViewIfNeeded();
+      const rect = await slider.boundingBox();
+      const y = Math.max(20, Math.min(700, rect.y + 100));
+      const cdp = await touch.newCDPSession(mobile);
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: width * .8, y }] });
+      for (let step = 1; step <= 12; step++) {
+        await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: width * (.8 - .6 * step / 12), y }] });
+        await mobile.waitForTimeout(20);
+      }
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await mobile.waitForTimeout(400);
+      assert(await slider.evaluate(el => el.scrollLeft > 30), 'native swipe moves carousel');
+      assert(await mobile.locator('.showcase .project-caption').evaluateAll(elements => elements.every(el => el.scrollWidth <= el.clientWidth + 1)), 'carousel captions and logos fit cards');
+      await mobile.locator('.experience-item summary').first().tap();
+      await mobile.waitForFunction(() => document.querySelectorAll('.experience-item[open]').length === 1);
+      assert.equal(await mobile.locator('.experience-item[open]').count(), 1);
+      assert(await mobile.locator('.experience-item').first().locator('.job').isVisible(), 'mobile job role visible');
+      await mobile.locator('.article-body summary').first().tap();
+      assert.notEqual(await mobile.locator('.article-body details').first().getAttribute('open'), null);
+      assert.equal(await mobile.locator('[data-count="200"]').textContent(), '200');
+      const icon = await mobile.request.get(new URL('/assets/logo.webp', mobile.url()).href);
+      assert.equal(icon.status(), 200, 'favicon/logo loads');
+      await touch.close();
+      console.log(`${width}px touch/swipe: PASS`);
+    }
     assert.deepEqual(errors, []);
     console.log('Fonts, images, keyboard, menu, accordion, View More, capsule, motion, carousel, wheel boundaries and console: PASS');
   } finally {

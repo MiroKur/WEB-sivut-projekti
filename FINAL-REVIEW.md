@@ -1,47 +1,72 @@
-# Viimeistelykierros 11.11.2026
+# Koodin dokumentointi, mobiili ja Figma — 11.11.2026
 
-Lähtö: main `17e629c`. Työhaara: `feat/portfolio-final-interactions`. Nykyinen sivurakenne ja mallisisältö säilytettiin. Tämä dokumentti kuvaa uusimman tilanteen; VALIDATION.md:n aiemmat päivämäärät ovat historiaa.
+[PR #12](https://github.com/MiroKur/WEB-sivut-projekti/pull/12) · [Opiskelijan koodiopas](docs/CODE-GUIDE.md) · [Figma Design](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) · [Mobiiliprototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down)
 
-## Toteutetut korjaukset
+## Lähtötilan varmistus
 
-- Alkuperäiset kolme henkilökuvaa, kalustekuvat ja konsultointikuva korvaavat kuvakaappauksista tehdyt versiot. For Squeeze-, maapallo- ja susitunnukset alkuperäisistä PNG-tiedostoista. Kolmannessa blogissa sohvan sijaan alkuperäinen abstrakti diva-kuva. Täydellinen tiedostokartta: [MATERIALS.md](MATERIALS.md) ja [assets/sources.json](assets/sources.json).
-- About Me: erottuva ulompi vaalea tausta, sävytetty 120 % -kortti maapallomerkkeineen, valkoinen oikea sisältökortti, yhtenäiset pyöristykset ja alkuperäisten henkilökuvien rajaukset. Kaareva nuoli säilyy muokattavana SVG:nä.
-- Showcase: kaikilla leveyksillä leveä natiivi vaakakaruselli, scroll snap, mobiilin seuraavan kortin reuna, oikeat erilliset logot ja kuvatekstit. Työpöydän aloituksessa keskimmäinen kuva on keskellä. Vierityspalkki, edellinen/seuraava-painikkeet sekä todellista vieritystä seuraava range-kontrolli.
-- Hiiren pystyrulla vierittää karusellia vain käytettävissä olevaan suuntaan; reunoissa pystyscroll vapautuu. Natiivi vaakarulla ja trackpad säilyvät. Painikkeiden käytettävyys seuraa reunoja; range toimii näppäimistöllä.
-- Hero: enintään 10 px henkilökuvan ja vastakkaissuuntainen 5 px otsikon parallax, requestAnimationFrame, palautus pointerleave/pointercancel-tapahtumilla. Ei efektiä karkealla/hoverittomalla osoittimella. +200/+50 animoituvat kerran 1,5 sekunnissa. Hello-otsikon paljastus säilyttää HTML-tekstin ja asettelun. Reduced motion pysäyttää liikkeen ja näyttää loppuluvut, myös asetuksen vaihtuessa kesken käytön.
-- Experiences: natiivi details/summary, yksi avoin rivi, hover/focus-vihje, avoimen rivin tausta, näkyvä plusmerkki ja kevyt sisällön paljastus ilman korkeuskikkoja. Kuvat pyöristetty.
-- Winter Deal: yläteksti, koko pääotsikko, annettu kuvausteksti ja Let's talk palautettu erillisiksi HTML-elementeiksi. Tumma kuva/overlay ja mobiiliin mahtuva keskitetty sisältö.
-- Latest Works: oikeat For Squeeze -logot, yhtenäiset kuvien pyöristykset ja hover/focus. Nykyiset sisältökuvat säilytettiin, koska referenssin alkuperäiset 3D-kuvat puuttuvat; niiden järjestystä ei väitetä mallin mukaiseksi.
-- Blogit: kolme erilaista abstraktia lähdekuvaa; kuvan leikkaava kehys, koko kortin hover/focus-korostus ja toimiva Read insight. Koko kortista ei tehty klikkausaluetta, joten sisäkkäisiä kontrolleja ei synny.
+PR #12 oli avoin, head `ca076e111bfe2c32e08dd3e683c201bdc24254f2`; työpuu oli puhdas ja originin haara vastasi sitä. Työ jatkuu samalla `feat/portfolio-final-interactions`-haaralla: ei toista ristiriitaista toteutushaaraa, eikä mainia yhdistetä automaattisesti.
 
-## Testaus
+Ennen muutoksia PR:n oma Playwright-tarkistin ajettiin onnistuneesti 320/390/768/1024/1440 px leveyksillä. Se varmisti kuvat ja fontit, hero-laskurit/parallaxin/Hello-animaation reduced motion -tilan, karusellin ja sen rullaohjauksen/reunat, accordionin, blogit, valikon, Winter Deal -sisällön mahtumisen ja näppäimistön. Lähtötilan kuvakaappaukset otettiin. Ensimmäinen palvelinyhteys oli vanhentunut; oma paikallinen palvelin käynnistettiin porttiin 5501 ja testit toistettiin sitä vasten.
 
-`node tests/browser-check.cjs`, Chromium/Playwright, paikallinen HTTP-palvelin. Leveydet 320, 390, 768, 1024 ja 1440 px (korkeus 900 px).
+## Koodin kommentointi ja siivous
 
-Kaikilla leveyksillä: kuvat dekoodautuvat, alt ja oikeat width/height ovat olemassa, fontit latautuvat, dokumentissa ei vaakaylivuotoa, karuselli ylittää oman kehyksensä, range toimii Home/End-näppäimillä, Winter Deal -sisältö mahtuu korttiin. Ohituslinkki, mobiilivalikko/Escape, accordion, View More/aria-expanded, blogin avaus ja focus-outline tarkistettu. Pidennetty kapseliteksti mahtuu.
+- `index.html` pysyy yhtenä one-page-sivuna. Kaikilla kymmenellä osiolla on selittävä suomenkielinen pääkommentti. Sisäiset kommentit avaavat kuvasäiliöt, ankkurit, JS-tunnisteet, natiivin details/summaryn, lazy loadingin ja koristeiden aria-hidden/alt-käytön.
+- `script.js` on jaettu kommenttiotsikoilla toimintoihin. Kommentit selittävät matchMedian, osoitinehdot, koordinaattien normalisoinnin, request/cancelAnimationFramen, IntersectionObserverin, laskurien ease-outin, scroll-mitat, range-ohjauksen ja rajatun preventDefault-käytön. Varsinaisia vanhoja toimintoja ei korvattu.
+- `styles.css` on koottu 13 loogiseen ryhmään. Täsmälleen samojen perustyyliselektorien myöhemmät ylikirjoitukset yhdistettiin, saman mediaehdon säännöt koottiin ja käyttämättömiä vanhoja client-label/suoran blogikuvan sääntöjä poistettiin. Mobiilissa samat selectorit koottiin yhdeksi kokonaisuudeksi. Väri- ja välitokenit vastaavat myös Figmaa.
+- Ennen mobiilimuutoksia selaimen laskettuja asettelu-, väri- ja typografiatyylejä verrattiin lähtötilaan kaikille body-elementeille **kahdeksalla leveydellä**: ei eroja. Mobiilimuutosten jälkeen 768/1024/1440 px vertailu säilyi identtisenä näille mitatuille tyyleille. Tämä on rajattu regressiotarkistus, ei väite alkuperäisen Wolfpixel-mallin pikselintarkasta vastaavuudesta.
+- Uusi [CODE-GUIDE.md](docs/CODE-GUIDE.md) selittää toteutuksen opiskelijalle ja antaa ohjeet värien, kuvien, tekstien, laskurien ja animaatioasetusten muuttamiseen.
 
-Erilliset toiminnalliset tarkistukset: laskurien välivaihe ja loppuarvot, ei uudelleenkäynnistystä hero-alueelle palatessa, parallaxin liike ja palautus, reduced motion -asetuksen vaihto ajon aikana, hiiren pysty- ja vaakarulla, karusellin molempien reunojen vapauttama sivuscroll sekä koko blogikortin hover. Ilman JavaScriptiä lopulliset luvut/otsikko näkyvät, natiivi karuselli ja blogi toimivat. Kosketuslaitetta jäljittelevässä kontekstissa parallax pysyy pois käytöstä ja valikko aukeaa napauttamalla.
+## Mobiilin oma sommittelu
 
-Ei JavaScript-, konsoli- tai verkkopyyntövirheitä testisivulla. Myös `node --check script.js`, testin syntaksi ja `git diff --check` läpäisty.
+Lähtöleveys 390 px, tarkistukset myös 320/360/375/430 px. Desktopin toteutusta ei rakennettu uudelleen.
 
-Kokosivukuvat kaikilta viideltä leveydeltä; osiokuvat 390/768/1440 px, karuselli ja Winter Deal lisäksi 390/1440 px. Visuaalisesti tarkastettiin hero, About, showcase, accordion, CTA, Latest Works, blogi sekä mobiilin ja työpöydän kokosivut. Ei havaittua sivun vaakaylivuotoa tai tekstien/kuvien haitallista päällekkäisyyttä. Kuvakaappaukset eivät yksin osoita alkuperäisen mallin täsmällistä vastaavuutta.
+| Alue | Muutos ja ero desktopiin |
+| --- | --- |
+| Header | Tunnuksen kosketusalue 44 × 44 px, selkeämpi 14 px Menu, vähintään 44 px toimintokohteet ja 48 px valikkolinkit. Kolme pääryhmää mahtuvat myös 320 px leveydelle. |
+| Hero | Oma pystysuuntainen Grid: teksti ja Scroll down ennen normaalissa virrassa olevaa henkilökuvaa. Kiinteä 730 px minimikorkeus ja scroll-linkin 608 px top poistettiin mobiilissa. Kuva ei peitä tekstiä. |
+| About | Kolme pääpalstaa muuttuvat pinoksi; tilastokortin sisällä kaksi palstaa. Esittely- ja lisätekstit 14 px, kortin kuvaus 12 px. |
+| Showcase | Selaimen oma vaakapyyhkäisy ja snap säilyvät. Otsikko ja logo ovat omilla riveillään; seuraavan kortin reuna antaa vihjeen. |
+| Experiences | Nimi, aika, rooli ja tagit näkyvät mobiilissakin. Rooli on omalla rivillään, plus oman kapean palstansa yläreunassa. |
+| Winter Deal | Kaikki neljä tekstiosaa säilyvät; otsikko käyttää mobiilin clamp-arvoa ja kuvaus on luettavampi. |
+| Latest Works / blogit | Yksi pääkortti per rivi, oikeat kuvasuhteet ja logot. Read insight on 14 px ja toimii napautuksella. |
+| Contact / footer | Suuremmat tekstit ja linkit, sähköpostin joustava fonttikoko sekä rivittyminen. Piilotettavan br-elementin ympärille lisättiin puuttuva välilyönti, jotta sanat eivät yhdisty; sama Winter Deal -otsikossa. |
 
-## Ennen / jälkeen
+Hero-parallax jää pois kosketusosoittimella. Laskurit ja reduced motion -käytös säilyvät. Mobiilille ei lisätty erillistä HTML-tiedostoa, frameworkia tai wheel-simulaatiota.
 
-Kuvissa vasen sarake on main `17e629c`, oikea tämän haaran toteutus. Samat 1440 px leveydet, reduced motion. Mobiilikuvassa uusi 390 px toteutus.
+## Testit ja visuaalinen tarkistus
 
-![Hero ja About Me ennen / jälkeen](docs/screenshots/before-after.webp)
+Nykyinen `tests/browser-check.cjs` laajennettiin kaikille leveyksille: **320, 360, 375, 390, 430, 768, 1024 ja 1440 px**. Kaikki läpäisty Chromiumilla.
 
-![Showcase työpöydällä](docs/screenshots/showcase-desktop.webp)
+Tarkistukset: ei dokumentin vaakaylivuotoa, kuvat/alt/width/height ja paikalliset fontit latautuvat, nuoliympyrät säilyvät, range toimii Home/End-näppäimillä, valikko/Escape/ankkurit, vain yksi avattu accordion, View More/aria-expanded, blogin Enter-avaus, focus-outline, kapselin pitkä teksti ja Winter Deal -sisällön mahtuminen. Hero-laskurien väli- ja loppuarvot, ei toistoa palatessa, parallax/palautus ja reduced motion -asetuksen muutos tarkistettiin erikseen. Myös tavallinen pysty-/vaakarulla ja karusellin molemmat reunat tarkistettiin.
 
-![Winter Deal mobiilissa](docs/screenshots/offer-mobile.webp)
+Viidellä mobiilileveydellä erillinen `isMobile + hasTouch` -konteksti: todelliset Chromiumin `Input.dispatchTouchEvent`-kosketustapahtumat aloittavat, liikuttavat ja päättävät pyyhkäisyn. Testi ei muuta scrollLeftiä pyyhkäisyn simuloimiseksi. Karuselli liikkuu natiivisti; sen otsikot ja logot mahtuvat korttiin. Napautuksella tarkistettiin valikko, accordion ja blogi. Heron tekstin ja kuvan erillisyys, headerin 44 px kosketuskohteet, parallaxin poiskytkentä, loppuluvut ja logo/favicon tarkistettiin. Ei merkittäviä konsoli- tai JavaScript-virheitä. Ilman JS:ää sisältö/loppuluvut, natiivi karuselli ja blogi säilyvät.
 
-[Mobiilin koko sivu](docs/screenshots/page-mobile.webp)
+`node --check script.js`, testin syntaksi ja `git diff --check` läpäisty. Tarkistus tarvitsee kehitysympäristössä Playwrightin/Chromiumin; sivusto ei saa uusia npm-riippuvuuksia.
 
-## Malliin jäävät erot ja käyttäjän jäljellä olevat tehtävät
+Kokosivukuvat kaikilta kahdeksalta leveydeltä; osiot 390/768/1440 px ja showcase/CTA 390/1440 px. Mobiilin ja desktopin Hero, About, karuselli, avattu accordion, CTA, projektit, blogit ja footer tarkastettiin visuaalisesti. Kuvien vertailuparit alla: vasen PR #12 `ca076e1`, oikea uusi toteutus. Desktopin mahdollinen vierityksen/hoverin tila kuvassa ei ole ulkoasumuutos.
 
-Tämä kierros ei ole täydellinen visuaalinen mallikopio. Showcase/FutureTech-, Latest Works- ja blogireferenssien erilliset 3D/studiokuvitukset puuttuvat. Blogien kolmas kuva on sinivioletti vihreän sijaan; Latest Worksin nykyiset kalustekuvat poikkeavat referenssistä. Winter Deal käyttää aiheeltaan oikeaa mutta erilaista suunnittelukuvaa. Tarkat kuvakohtaiset rajaukset dokumentissa MATERIALS.md.
+![Mobiilin Hero ja About ennen / jälkeen](docs/screenshots/mobile-pass-before-after-390.webp)
 
-Koko sivun leiskakuvaa, About Me:n täsmällistä mallikuvaa ja opettajan videoita ei ollut toimituksessa. Repositorion Dribbble-lähdeosoitetta kokeiltiin myös verkosta: HTTP 202 ja tyhjä vastaus, joten kokonaismallia ei voitu sieltäkään avata. Koko sivun mittojen ja videodemojen täsmällistä vastaavuutta ei vahvisteta. Safari/Firefox-, fyysisen kosketuslaitteen ja ruudunlukijan erillistestausta ei tehty.
+![Desktopin Hero ja About ennen / jälkeen](docs/screenshots/mobile-pass-before-after-1440.webp)
 
-Käyttäjä tarkistaa PR:n ennen yhdistämistä ja toimittaa puuttuvat alkuperäiset 3D-kuvat/kokonaisleiskan tarkkaa kuvavastaavuutta varten. Figma-mobiiliprototyypin linkki ja palautus ovat edelleen varmistamatta; desktop-proto on lisätavoite. Täydennä COURSE.md:n palautuslinkit ja jäsenet sekä varmista opettajalta määräaika ja palautusmuoto. Tässä työssä ei luotu Figma-tiedostoja eikä vahvistettu sivuston tuotantojulkaisua.
+[Mobiilin koko sivu](docs/screenshots/mobile-pass-page-390.webp) · [Desktopin koko sivu](docs/screenshots/mobile-pass-page-1440.webp)
+
+## Figma-toteutus
+
+Luotiin oikea, käyttäjän SAMK-tiimissä oleva Figma **Design** -tiedosto. Kahdeksan erillisen mobiiliosion lisäksi koko sivun vieritettävä frame ja lisätöiden näkymä. Kaikki 390 px lähtöleveydellä. Valokuvat ovat erillisiä image fill -kuvia; UI ei ole litistetty verkkosivun kuvakaappaus.
+
+Koko sivu sisältää 108 muokattavaa tekstikerrosta ja 105 Auto Layout -rakennetta. Neljä varianttiperhettä kattavat valikon, tavallisen accordionin, kolmen kuvan accordionin ja blogin auki/kiinni-tilat. Projektikortit ovat komponentti-instansseja. CSS:ää vastaavat väri-, väli- ja pyöristysmuuttujat sekä yhdeksän Poppins-tekstityyliä.
+
+Prototyyppiin johdotettiin Menu/Close, osioankkurit, accordion, vaakavieritettävä karuselli ja sen nuolet, Book A Call/Let's talk, blogien avaus, View More ja paluu sekä sähköpostin mailto. Linkkien destinationId-kohteet validoitiin: ei puuttuvia kohteita. Pysty- ja vaakavierityksen overflow on määritelty. Ainoa aloitusflow on koko mobiilisivu.
+
+Figma-kuvat ja rakenne tarkistettiin API:lla, mukaan lukien korjausten jälkeinen visuaalinen tarkistus. Kaikilla 78 Image-kerroksella (myös komponenttimasterit ja erilliset framet) on lopuksi kuvatäyttö. Näkyvät tekstit, kuvat ja komponenttien tilat korjattiin tarkistuksen perusteella. Tarkat linkit, tokenit ja muokkausohjeet: [FIGMA-MOBILE.md](docs/FIGMA-MOBILE.md).
+
+Figma-esitystilan läpiklikkausta kirjautuneessa selaimessa ei voitu tehdä ympäristön Figma-verkkoyhteyden rajoituksen vuoksi. Navigaatio on johdotettu ja sen kohteet tarkistettu, mutta esitystilan käyttöä ei väitetä automaattisesti läpiklikatuksi. Figma yksinkertaistaa joitakin toimintoja: View More käyttää omaa näkymää, accordion-rivit ovat itsenäisiä ja hero-animaatioiden ajastusta ei jäljitellä. Varsinainen verkkosivu säilyttää oikean toiminnallisuutensa.
+
+## Kurssipalautuksen jäljellä olevat asiat
+
+- Käyttäjä tarkistaa PR #12:n ja päättää yhdistämisestä; mainia ei yhdistetty.
+- Figma-linkki on nyt olemassa. Käyttäjä käy esitystilan läpi omassa Figmassaan, varmistaa opettajan katseluoikeudet ja lähettää linkin kurssipalautukseen. Jäsentiedot, palautusmuoto ja määräaika on yhä varmistettava. Pelkkä tiedoston luominen ei ole palautuksen lähetys.
+- Desktop-Figma-proto säilyy aiemmin dokumentoituna lisätavoitteena; tässä pyydetty mobiili Design -tiedosto on luotu.
+- Referenssien erilliset 3D-kuvitukset ja koko Wolfpixel-leiska puuttuvat edelleen. Kuvavastaavuuden rajat ja oikeat alkuperäiskuvat: [MATERIALS.md](MATERIALS.md). Niitä ei korvattu litistetyillä UI-kuvilla eikä tarkkaa alkuperäismallivastaavuutta väitetä.
+- Fyysistä puhelinta, ruudunlukijaa tai Safari/Firefox-moottoreita ei testattu. GitHub Pagesin tuotantojulkaisua ei vahvistettu.
