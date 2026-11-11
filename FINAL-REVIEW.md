@@ -1,10 +1,10 @@
 # Koodin dokumentointi, mobiili ja Figma — 11.11.2026
 
-[PR #12](https://github.com/MiroKur/WEB-sivut-projekti/pull/12) · [Opiskelijan koodiopas](docs/CODE-GUIDE.md) · [Figma Design](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) · [Mobiiliprototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down)
+[Jatko-PR #13](https://github.com/MiroKur/WEB-sivut-projekti/pull/13) · [Opiskelijan koodiopas](docs/CODE-GUIDE.md) · [Figma Design](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) · [Mobiiliprototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down)
 
 ## Lähtötilan varmistus
 
-PR #12 oli avoin, head `ca076e111bfe2c32e08dd3e683c201bdc24254f2`; työpuu oli puhdas ja originin haara vastasi sitä. Työ jatkuu samalla `feat/portfolio-final-interactions`-haaralla: ei toista ristiriitaista toteutushaaraa, eikä mainia yhdistetä automaattisesti.
+PR #12 oli avoin, head `ca076e111bfe2c32e08dd3e683c201bdc24254f2`; työpuu oli puhdas ja originin haara vastasi sitä. Työ jatkui samalla `feat/portfolio-final-interactions`-haaralla ilman toista ristiriitaista toteutushaaraa. PR #12 yhdistettiin GitHubissa työn aikana (merge `aa7a211`). Tämän kierroksen jatkomuutokset ovat erikseen tarkistettavassa PR #13:ssa; niitä ei yhdistetty mainiin.
 
 Ennen muutoksia PR:n oma Playwright-tarkistin ajettiin onnistuneesti 320/390/768/1024/1440 px leveyksillä. Se varmisti kuvat ja fontit, hero-laskurit/parallaxin/Hello-animaation reduced motion -tilan, karusellin ja sen rullaohjauksen/reunat, accordionin, blogit, valikon, Winter Deal -sisällön mahtumisen ja näppäimistön. Lähtötilan kuvakaappaukset otettiin. Ensimmäinen palvelinyhteys oli vanhentunut; oma paikallinen palvelin käynnistettiin porttiin 5501 ja testit toistettiin sitä vasten.
 
@@ -65,7 +65,7 @@ Figma-esitystilan läpiklikkausta kirjautuneessa selaimessa ei voitu tehdä ymp�
 
 ## Kurssipalautuksen jäljellä olevat asiat
 
-- Käyttäjä tarkistaa PR #12:n ja päättää yhdistämisestä; mainia ei yhdistetty.
+- Käyttäjä tarkistaa jatko-PR #13:n ja päättää sen yhdistämisestä. PR #12 yhdistettiin työn aikana erillisenä GitHub-toimintona; agentti ei yhdistänyt sitä tai jatko-PR:ää.
 - Figma-linkki on nyt olemassa. Käyttäjä käy esitystilan läpi omassa Figmassaan, varmistaa opettajan katseluoikeudet ja lähettää linkin kurssipalautukseen. Jäsentiedot, palautusmuoto ja määräaika on yhä varmistettava. Pelkkä tiedoston luominen ei ole palautuksen lähetys.
 - Desktop-Figma-proto säilyy aiemmin dokumentoituna lisätavoitteena; tässä pyydetty mobiili Design -tiedosto on luotu.
 - Referenssien erilliset 3D-kuvitukset ja koko Wolfpixel-leiska puuttuvat edelleen. Kuvavastaavuuden rajat ja oikeat alkuperäiskuvat: [MATERIALS.md](MATERIALS.md). Niitä ei korvattu litistetyillä UI-kuvilla eikä tarkkaa alkuperäismallivastaavuutta väitetä.
