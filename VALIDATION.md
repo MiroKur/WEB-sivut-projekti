@@ -1,3 +1,7 @@
+# Uusin tarkistus: 11.11.2026
+
+Nykyinen toteutus ja testitulokset: [FINAL-REVIEW.md](FINAL-REVIEW.md). Alla olevat 2.11.2026-merkinnät ovat historiallisia; esimerkiksi kuvakaappausrajaukset ja sohva blogikuvana eivät enää kuvaa nykyistä versiota.
+
 # Auditointi ja tarkistus 2.11.2026
 
 ## Lähtötila ja ratkaisut

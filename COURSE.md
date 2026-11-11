@@ -34,3 +34,8 @@ Idea: Mukautimme annetun työpöytäleiskan yhden palstan mobiilikokemukseksi. S
 HTML/CSS/JS-toteutus ja responsiivinen toiminta on testattu Chromiumilla (320–1440 px); yksityiskohdat `VALIDATION.md`:ssä. Tämä ei vahvista alkuperäisen mallin tarkkaa vastaavuutta eikä palautuksen valmistumista.
 
 Pakolliseksi dokumentoitu mobiilin Figma-prototyyppi on yhä varmistamatta: repositoriossa ei ole vahvistettua prototyyppilinkkiä tai näyttöä palautuksesta. Desktop-proto on tämän projektin lisätavoite. Käyttäjän tulee täydentää prototyyppilinkit ja jäsenet sekä tarkistaa lopullinen palautusmuoto ja määräaika. D.Nova on säilytetty mallisisältönä; henkilökohtaisia tietoja tai uusia asiakasprojekteja ei keksitty.
+
+
+## Viimeistelykierros 11.11.2026
+
+Tekniset korjaukset ja viiden leveyden selaintestit: [FINAL-REVIEW.md](FINAL-REVIEW.md). Figma-palautus säilyy erillisenä tarkistuskohtana: mobiiliprototyypin pakollisuus, desktop-proton lisätavoite, linkit, jäsenet ja palautuksen varmistus eivät ratkea HTML/CSS/JS-testien läpäisyllä. Mallisisältö säilytetty kurssiprojektina.

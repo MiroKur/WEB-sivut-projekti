@@ -1,75 +1,42 @@
 # D.Nova — responsive one-page portfolio
 
-SAMK Web-sivut -kurssin harjoitustyö. HTML, CSS ja pieni määrä JavaScriptiä. Ei backendia, build-vaihetta eikä npm-riippuvuuksia.
+SAMK Web-sivut -kurssiprojekti, HTML5, moderni CSS ja vanilla JavaScript. Nykyistä toteutusta on jatkettu main-commitista `17e629c` haarassa `feat/portfolio-final-interactions`. Ei build-vaihetta tai sivuston JavaScript-riippuvuuksia.
 
-## Käynnistys
-
-Avaa kansio VS Codessa ja käynnistä `index.html` Live Serverillä, tai:
+## Käynnistys ja tarkistus
 
 ```sh
 python -m http.server 5500
 ```
 
-Avaa http://localhost:5500. Sivun voi avata myös suoraan index.html-tiedostosta. Poppins (300–600) ladataan paikallisista WOFF2-tiedostoista. Fontin SIL Open Font License löytyy tiedostosta `assets/fonts/OFL.txt`; verkkoyhteyttä fonttipalveluun ei tarvita.
-
-## Tiedostot
-
-- `index.html`: semanttiset sisältöosiot ja ankkurilinkit.
-- `styles.css`: yhteiset värit CSS-muuttujina, työpöytä- ja mobiiliasettelu, reduced-motion.
-- `script.js`: mobiilivalikko, työhistorian accordion ja lisää töitä -painike.
-- `assets/`: toimitetusta kurssimateriaalista optimoidut WebP-kuvat ja SVG.
-- `assets/sources.json`: kuvien alkuperäiset tiedostonimet.
-- `COURSE.md`: vaatimukset ja palautusmuistio.
-
-## Oman portfolion viimeistely
-
-Nimi D.Nova, asiakasmäärät, työhistoria, esimerkkiprojektit ja hello@dnova.com ovat mallisisältöä, eivät opiskelijan omia tietoja. Vaihda ne ennen henkilökohtaista julkaisemista. Blogien lyhyet tekstit ovat tähän toteutukseen kirjoitettua mallisisältöä. Linkit pysyvät yhdellä sivulla; sähköpostiosoite käyttää mailto-linkkiä. Lomake tai ajanvarauspalvelu ei ole käytössä.
-
-## Suunnittelulähde ja aineisto
-
-Ulkoasun lähtökohta: Wolfpixel UI/UX, [Personal Portfolio Website Design](https://dribbble.com/shots/24978876-Personal-Portfolio-Website-Design). Poppins korvaa Aeonik-fontin kurssiohjeen mukaisesti. Valkoinen, vaaleanharmaa ja hiilenmusta on sovitettu toimitettuihin kuviin; tarkkaa väritoken-tiedostoa ei toimitettu.
-
-Kuvat ovat käyttäjän toimittamasta kurssimateriaalista (Pexels/tekoälykuvat). ZIP sisälsi kuvat kuvakaappauksina, ei alkuperäisinä täysikokoisina tiedostoina. Jakeluversiot on pakattu WebP:ksi; alkuperäisiä liitteitä ei muutettu. Suurempiresoluutioiset Moodle-lataukset voi vaihtaa samoille tiedostonimille. Kolmanteen blogiin käytetään väliaikaisesti toimitettua sohva-kuvaa, sillä erillistä diva-kuvaa ei löytynyt paketista.
-
-Sivun yläpuolinen Dribbble-esittelyotsikko ja kannettavan tietokoneen kehys eivät kuulu itse verkkosivuun.
-
-## Toteutustavan korjaus 2.11.2026
-
-Työhaara: `fix/course-ui-elements`, lähtötilanne commitissa `1a845a3`.
-
-- Portfolio-kapseli on `inline-flex`-komponentti: reunus, pyöristys, sisäympyrä ja sen maapalloa muistuttava koriste tehdään CSS:llä. Tekstiä voi vaihtaa HTML:ssä.
-- Pyöreä `.round-arrow` käyttää yhteistä kokomuuttujaa, CSS-ympyrää ja itse määriteltyä SVG-nuolta. Samaa nuolta käytetään tekstilinkeissä. Linkit navigoivat; View More on painike.
-- About Me -nuolikoriste on itse määritelty SVG. Tähtikoristeet ja footerin viivageometria rakennetaan CSS:llä.
-- CSS on avattu luettavaksi ja ryhmitelty osioihin. Grid-, Flexbox-, clamp-, aspect-ratio-, hover-, focus- ja reduced-motion-ratkaisut säilyvät.
-- View More vaihtaa vain tekstisolmun sisällön; SVG-kuvake säilyy. Natiivi details/summary ja nykyinen mobiilivalikko säilyvät.
-- Hero-kuvan yläreunan vaalea kuvakaappauskaistale rajataan kuvakehyksessä CSS:llä. Alkuperäinen kuvatiedosto säilyy.
-
-Kuva- ja elementtikohtainen auditointi sekä suoritetut testit: [VALIDATION.md](VALIDATION.md).
-
-Alkuperäistä kokonaista Wolfpixel-mallikuvaa ei ole tässä repositoriossa. Sommittelu perustuu nykyiseen toteutukseen; tarkka mallivertailu on vielä tehtävä kurssin alkuperäistä referenssiä vasten.
-
-## GitHub
-
-Olemassa oleva repository: https://github.com/MiroKur/WEB-sivut-projekti . Ensimmäisen vaiheen korjaukset on viety GitHubiin ja yhdistetty main-haaraan PR #10:ssä (`e91866c`). GitHub Pages -julkaisun tilaa ei ole varmistettu. Staattinen rakenne sopii GitHub Pagesiin ilman build-vaihetta.
-
-
-## Visuaalinen viimeistely, vaihe 2
-
-Haara `fix/final-visual-polish` perustuu main-commitiin `e91866c`. Nuolikomponentin kokomääritykset on yhtenäistetty, tabletin hero-otsikko skaalautuu joustavasti ja blogikorttien sisävälejä on säädetty. Kosketuskohteiden vähimmäiskorkeus on 44 px; kuvan nuolet näkyvät myös laitteilla, joilla ei ole hoveria. Navigaation Experience kuvaa linkin työhistoriasisältöä. Favicon käyttää olemassa olevaa logoa. Ohituslinkki näkyy vain kohdistettuna.
-
-Hero-kuvan alkuperäinen tiedosto säilytettiin: CSS-kehys rajaa yläreunasta vähintään 51 lähdekuvapikseliä kaikilla testileveyksillä ilman uudelleenpakkausta. Sivun kuvasuhde on ilmoitettu kuvan todellisten mittojen mukaan.
-
-Tekniset Chromium-testit on ajettu viidellä leveydellä. Alkuperäisen mallin vertailu jäi avoimeksi: Dribbble-osoitteen lataus sai ympäristön proxylta 403-vastauksen. Figma-prototyypin linkkiä tai palautusta ei ole varmistettu. Katso tarkat tulokset ja palautuksen avoimet asiat tiedostoista `VALIDATION.md` ja `COURSE.md`.
-
-
-## Toistettava selaintarkistus
-
-Käynnistä HTTP-palvelin repositoryn juuresta ja suorita toisessa terminaalissa:
+Avaa http://localhost:5500. Testaus erillisessä terminaalissa:
 
 ```sh
 node tests/browser-check.cjs
 ```
 
-Tarkistin tarvitsee kehitysympäristössä Playwrightin ja Chromiumin; itse sivustoon ei lisätty npm-riippuvuuksia. Chromiumin oletuspolku on `/usr/bin/chromium` (ylikirjoitus `CHROMIUM_PATH`), palvelimen osoite `http://127.0.0.1:5500` (`SITE_URL`) ja kuvakaappaushakemisto `/tmp/portfolio-check` (`SCREENSHOT_DIR`). Tarkistin ei korvaa kuvien visuaalista tarkastusta.
+Testi tarvitsee kehitysympäristössä Playwrightin ja Chromiumin. Oletukset: `CHROMIUM_PATH=/usr/bin/chromium`, `SITE_URL=http://127.0.0.1:5500`, `SCREENSHOT_DIR=/tmp/portfolio-check`. Testit eivät korvaa visuaalista vertailua.
 
-Aiempi viimeistely löytyi paikallisesta commitista `ae50199` haaralta `fix/final-visual-polish`. Sen pohjalta jatkettiin; main-haaraa ei palautettu vanhempaan versioon. Muutokset viedään erilliseen tarkistettavaan haaraan, ei suoraan mainiin.
+## Toteutus
+
+- `index.html`: muokattava HTML-sisältö, natiivit details/summary-accordionit, ankkurit ja kuvat.
+- `styles.css`: Poppins 300–600 paikallisista WOFF2-tiedostoista, Grid/Flexbox, responsiivisuus, hover/focus ja reduced motion. Fontin lisenssi: `assets/fonts/OFL.txt`.
+- `script.js`: mobiilivalikko, yksi avoin työhistoriarivi, View More, hero-parallax/laskurit ja karusellin ohjaus.
+- `assets/sources.json`: käytettyjen kuvien alkuperät ja tarkat mitat.
+- [MATERIALS.md](MATERIALS.md): uuden ZIP-aineiston inventaario, käyttötarkoitukset ja puuttuvat kuvitukset.
+- [FINAL-REVIEW.md](FINAL-REVIEW.md): tämän kierroksen tulokset, rajaukset ja kuvakaappaukset.
+- [VALIDATION.md](VALIDATION.md): testaus ja aikaisempien vaiheiden historia.
+- [COURSE.md](COURSE.md): erilliset kurssi- ja Figma-palautuksen vaatimukset.
+
+## Käyttöliittymän toiminta
+
+Hero liikuttaa henkilökuvaa enintään 10 px ja otsikkoa 5 px vastakkaiseen suuntaan hiiren mukana. Pointer Events ja requestAnimationFrame; poistuminen palauttaa sijainnin. Efekti on pois käytöstä hoverittomilla/karkeilla osoittimilla ja reduced motion -tilassa. Laskurit saavuttavat +200 ja +50 noin 1,5 sekunnissa kerran heron tullessa näkyviin. Lopulliset luvut ovat HTML:ssä ja ruudunlukijan nimessä; reduced motion näyttää ne heti. Hello säilyy HTML-otsikkona, jonka kevyt paljastus ei muuta asettelua.
+
+Showcase vierii natiivisti vaakasuunnassa ja kohdistaa kortit CSS scroll snapilla. Työpöydällä aloitus keskittää keskimmäisen kortin; mobiili alkaa ensimmäisestä ja näyttää seuraavan reunaa. Hiiren pystyrulla ohjaa karusellia vain, kun kyseiseen suuntaan on tilaa. Reunassa sivun pystyscroll jatkuu. Natiivi vaakasuuntainen trackpad-liike ja zoom-ele säilyvät. Ohjauspainikkeet ja näppäimistöllä toimiva range-liukusäädin seuraavat todellista scrollLeft-arvoa. Ilman JavaScriptiä natiivi scroll ja scrollbar toimivat.
+
+Accordion käyttää details/summary-semanttiikkaa; avaus häivyttää sisällön ilman korkeuskikkoja. Koko blogikortin hover/focus korostaa kuvaa ja nuolta. Varsinainen Read insight säilyy näppäimistöllä ja kosketuksella toimivana summary-kontrollina; kuvan klikkaus ei avaa artikkelia.
+
+## Mallisisältö ja lähteet
+
+D.Nova, asiakasmäärät, työhistoria, projektit ja hello@dnova.com ovat kurssin mallisisältöä. Henkilökohtaista portfoliota tai uusia asiakkaita ei luotu. Blogien esimerkkitekstit ja ankkuritoiminnot säilyvät; ulkoista ajanvarausta tai backendia ei ole.
+
+Suunnittelulähde: Wolfpixel UI/UX, [Personal Portfolio Website Design](https://dribbble.com/shots/24978876-Personal-Portfolio-Website-Design). Poppins korvaa Aeonikin kurssin mukaisesti. Tässä kierroksessa vertailtiin käyttäjän ZIP-paketin osiokuvia; koko sivun mallia tai opettajan videoita ei toimitettu. Puuttuvien 3D-kuvitusten vuoksi kuvajärjestyksen täsmällistä mallivastaavuutta ei voida vahvistaa. Sivuston julkaisu ja Figma-palautus ovat erillisiä tarkistuksia.
