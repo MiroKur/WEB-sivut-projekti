@@ -2,7 +2,7 @@
 
 [Design-tiedosto](https://www.figma.com/design/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87) · [Avaa prototyyppi](https://www.figma.com/proto/CAn1NxX7vfOdixPIUFJRV7?node-id=7-87&starting-point-node-id=7%3A87&scaling=scale-down)
 
-Tiedosto luotiin käyttäjän valitseman SAMK-opiskelijatilin omaan tiimiin 11.11.2026. Pääsivu on `Mobile — Design & prototype`. Prototyypin aloitusframe on **Mobile — Full page**, 390 × 844 px, node `7:87`. Sen sisällä koko sivu on Auto Layout -sisältönä; pystysuuntainen overflow mahdollistaa kaikkien osioiden selaamisen.
+Tiedosto luotiin SAMK-opiskelijatiliin. Pääsivu on `Mobile — Design & prototype`. Prototyypin aloitusframe on **Mobile — Full page**, 390 × 844 px, node `7:87`. Sen sisällä koko sivu on Auto Layout -sisältönä; pystysuuntainen overflow mahdollistaa kaikkien osioiden selaamisen.
 
 ## Muokattava rakenne
 

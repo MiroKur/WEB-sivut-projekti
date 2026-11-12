@@ -62,11 +62,3 @@ Prototyyppiin johdotettiin Menu/Close, osioankkurit, accordion, vaakavieritettä
 Figma-kuvat ja rakenne tarkistettiin API:lla, mukaan lukien korjausten jälkeinen visuaalinen tarkistus. Kaikilla 78 Image-kerroksella (myös komponenttimasterit ja erilliset framet) on lopuksi kuvatäyttö. Näkyvät tekstit, kuvat ja komponenttien tilat korjattiin tarkistuksen perusteella. Tarkat linkit, tokenit ja muokkausohjeet: [FIGMA-MOBILE.md](docs/FIGMA-MOBILE.md).
 
 Figma-esitystilan läpiklikkausta kirjautuneessa selaimessa ei voitu tehdä ympäristön Figma-verkkoyhteyden rajoituksen vuoksi. Navigaatio on johdotettu ja sen kohteet tarkistettu, mutta esitystilan käyttöä ei väitetä automaattisesti läpiklikatuksi. Figma yksinkertaistaa joitakin toimintoja: View More käyttää omaa näkymää, accordion-rivit ovat itsenäisiä ja hero-animaatioiden ajastusta ei jäljitellä. Varsinainen verkkosivu säilyttää oikean toiminnallisuutensa.
-
-## Kurssipalautuksen jäljellä olevat asiat
-
-- Käyttäjä tarkistaa jatko-PR #13:n ja päättää sen yhdistämisestä. PR #12 yhdistettiin työn aikana erillisenä GitHub-toimintona; agentti ei yhdistänyt sitä tai jatko-PR:ää.
-- Figma-linkki on nyt olemassa. Käyttäjä käy esitystilan läpi omassa Figmassaan, varmistaa opettajan katseluoikeudet ja lähettää linkin kurssipalautukseen. Jäsentiedot, palautusmuoto ja määräaika on yhä varmistettava. Pelkkä tiedoston luominen ei ole palautuksen lähetys.
-- Desktop-Figma-proto säilyy aiemmin dokumentoituna lisätavoitteena; tässä pyydetty mobiili Design -tiedosto on luotu.
-- Referenssien erilliset 3D-kuvitukset ja koko Wolfpixel-leiska puuttuvat edelleen. Kuvavastaavuuden rajat ja oikeat alkuperäiskuvat: [MATERIALS.md](MATERIALS.md). Niitä ei korvattu litistetyillä UI-kuvilla eikä tarkkaa alkuperäismallivastaavuutta väitetä.
-- Fyysistä puhelinta, ruudunlukijaa tai Safari/Firefox-moottoreita ei testattu. GitHub Pagesin tuotantojulkaisua ei vahvistettu.

@@ -1,4 +1,4 @@
-# D.Nova — responsive one-page portfolio
+# Responsiivinen one-page portfolio
 
 SAMK Web-sivut -kurssiprojekti, HTML5, moderni CSS ja vanilla JavaScript. Työtä on jatkettu PR #12:n commitista `ca076e1` samalla `feat/portfolio-final-interactions`-haaralla. HTML, CSS ja JavaScript on kommentoitu suomeksi, mobiili viimeistelty ja muokattava Figma Design -mobiiliprototyyppi luotu. PR #12 yhdistettiin työn aikana; nämä jatkomuutokset ovat avoimessa [PR #13:ssa](https://github.com/MiroKur/WEB-sivut-projekti/pull/13). Ei build-vaihetta tai sivuston JavaScript-riippuvuuksia.
 
