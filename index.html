@@ -827,6 +827,20 @@
      JavaScript päivittää vain vuosiluvun.
 =========================================== -->
     <footer class="footer">
+      <!-- Referenssin kehysviivat ovat muokattavia vektoripolkuja, eivät kuva.
+           Katkokset jättävät navigaation, sähköpostin ja copyrightin vapaiksi.
+           Koriste ei kuulu saavutettavaan sisältöön eikä vastaanota osoitintapahtumia. -->
+      <svg class="footer-decoration" viewBox="0 0 1440 240"
+        preserveAspectRatio="none" fill="none" aria-hidden="true" focusable="false">
+        <!-- Vasemman reunan risteävät, pyöristetyt kehyskulmat. -->
+        <path d="M88 0V36Q88 44 96 44H232V52" />
+        <path d="M-1440 44H80Q88 44 88 52V232Q88 240 80 240H-1440" />
+        <path d="M232 126V176M232 224V232Q232 240 224 240H88" />
+        <!-- Oikea kehys peilaa reunamuodon. Sähköpostin kohdalla on pidempi katkos. -->
+        <path d="M1352 0V36Q1352 44 1344 44H1208V52" />
+        <path d="M2880 44H1360Q1352 44 1352 52V232Q1352 240 1360 240H2880" />
+        <path d="M1208 140V232Q1208 240 1216 240H1352" />
+      </svg>
       <div class="container">
         <div class="footer-top">
           <nav aria-label="Footer navigation">

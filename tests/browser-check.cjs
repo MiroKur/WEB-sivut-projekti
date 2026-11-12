@@ -13,6 +13,71 @@ const selainPolku = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
 const testattavatLeveydet = [320, 360, 375, 390, 430, 768, 1024, 1440];
 const kosketusLeveydet = [320, 360, 375, 390, 430];
 
+// Footerin koriste tarkistetaan erillään sisältö- ja toimintatesteistä.
+// SVG-polkuja näytteistetään oikeissa näyttökoordinaateissa: pelkkä SVG:n
+// suorakulmainen rajaus ei kerro, kulkeeko yksittäinen viiva tekstin yli.
+async function tarkistaFooter(sivu) {
+  await sivu.locator('.footer').scrollIntoViewIfNeeded();
+  const tulos = await sivu.evaluate(() => {
+    const footer = document.querySelector('.footer');
+    const svg = footer.querySelector('.footer-decoration');
+    const rajat = footer.getBoundingClientRect();
+    const linkit = [...footer.querySelectorAll('a')];
+    const tekstialueet = [...linkit, footer.querySelector('.footer-bottom > span')]
+      .map((elementti) => elementti.getBoundingClientRect());
+    const sisalla = (x, y, r, vara = 2) =>
+      x >= r.left - vara && x <= r.right + vara &&
+      y >= r.top - vara && y <= r.bottom + vara;
+    const osumat = [];
+    if (getComputedStyle(svg).display !== 'none') {
+      for (const polku of svg.querySelectorAll('path')) {
+        const matriisi = polku.getScreenCTM();
+        const pituus = polku.getTotalLength();
+        for (let matka = 0; matka <= pituus; matka += 2) {
+          const piste = polku.getPointAtLength(matka).matrixTransform(matriisi);
+          if (!sisalla(piste.x, piste.y, rajat, 0)) continue;
+          if (tekstialueet.some((r) => sisalla(piste.x, piste.y, r))) {
+            osumat.push({ x: piste.x, y: piste.y });
+            break;
+          }
+        }
+      }
+    } else {
+      // Mobiilin ja tabletin yksinkertaiset kehykset pysyvät sivumarginaaleissa.
+      const vasen = getComputedStyle(footer, '::before');
+      const oikea = getComputedStyle(footer, '::after');
+      const vasenReuna = rajat.left + parseFloat(vasen.left) +
+        parseFloat(vasen.width) + parseFloat(vasen.borderRightWidth);
+      const oikeaReuna = rajat.right - parseFloat(oikea.right) -
+        parseFloat(oikea.width) - parseFloat(oikea.borderLeftWidth);
+      if (tekstialueet.some((r) => r.left <= vasenReuna + 2 || r.right >= oikeaReuna - 2)) {
+        osumat.push('Reunakehys ulottuu tekstialueelle');
+      }
+    }
+    return {
+      osumat,
+      ylivuoto: document.documentElement.scrollWidth > innerWidth,
+      koristePassiivinen: getComputedStyle(svg).pointerEvents === 'none' &&
+        ['::before', '::after'].every((p) => {
+          const tyyli = getComputedStyle(footer, p);
+          return tyyli.content === 'none' || tyyli.pointerEvents === 'none';
+        }),
+      linkitOsuvat: linkit.every((linkki) => {
+        const r = linkki.getBoundingClientRect();
+        const osuma = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+        return osuma === linkki || linkki.contains(osuma);
+      }),
+      saavutettavuus: svg.getAttribute('aria-hidden') === 'true' &&
+        svg.getAttribute('focusable') === 'false',
+    };
+  });
+  assert.deepEqual(tulos.osumat, [], 'Footerin koriste ei saa kulkea tekstien tai linkkien yli');
+  assert.equal(tulos.ylivuoto, false, 'Footerin koriste ei saa aiheuttaa vaakaylivuotoa');
+  assert(tulos.koristePassiivinen, 'Footer-koriste ei saa vastaanottaa osoitintapahtumia');
+  assert(tulos.linkitOsuvat, 'Footerin linkkien pitää vastaanottaa osoitintapahtumat');
+  assert(tulos.saavutettavuus, 'Footer-SVG on piilotettava avustavilta teknologioilta');
+}
+
 (async () => {
   // --- Selaimen käynnistys ja virheiden kerääminen ---
   fs.mkdirSync(kuvakaappausKansio, { recursive: true });
@@ -252,6 +317,12 @@ const kosketusLeveydet = [320, 360, 375, 390, 430];
         });
       }
 
+      await tarkistaFooter(sivu);
+      if ([390, 768, 1440].includes(leveys)) {
+        await sivu.locator('.footer').screenshot({
+          path: path.join(kuvakaappausKansio, `footer-${leveys}.png`),
+        });
+      }
       console.log(`${leveys}px: PASS`);
     }
 
