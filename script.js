@@ -160,6 +160,18 @@ const controls = document.querySelector('.showcase-controls');
 const position = controls.querySelector('input');
 const previous = controls.querySelector('.carousel-prev');
 const next = controls.querySelector('.carousel-next');
+let showcaseWheelEnabled = false;
+let showcaseActivationTimer;
+const showcaseObserver = new IntersectionObserver(([entry]) => {
+  clearTimeout(showcaseActivationTimer);
+  showcaseWheelEnabled = false;
+  if (entry.isIntersecting) {
+    showcaseActivationTimer = setTimeout(() => {
+      showcaseWheelEnabled = true;
+    }, 2000);
+  }
+});
+showcaseObserver.observe(track.closest('.showcase'));
 controls.hidden = false;
 // Muunnetaan todellinen sijainti prosentiksi. Pieni 1 px toleranssi huomioi pyöristyksen reunoissa.
 function syncCarousel() {
@@ -189,7 +201,7 @@ next.addEventListener('click', () => stepCarousel(1));
  */
 track.addEventListener('wheel', event => {
   // Säilytetään trackpadin vaakaliike, Shift-vieritys ja Ctrl-zoomaus selaimen omina eleinä.
-  if (event.ctrlKey || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY) || !event.deltaY) return;
+  if (!showcaseWheelEnabled || event.ctrlKey || event.shiftKey || Math.abs(event.deltaX) >= Math.abs(event.deltaY) || !event.deltaY) return;
   const max = track.scrollWidth - track.clientWidth;
   const canScroll = event.deltaY > 0 ? track.scrollLeft < max - 1 : track.scrollLeft > 1;
   if (!canScroll) return;

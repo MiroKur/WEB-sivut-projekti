@@ -1,246 +1,592 @@
-// Requires Playwright and Chromium in the development environment, not in the site.
-// Start the repository's HTTP server before running this script.
+// Playwright ja Chromium tarvitaan vain testausympäristössä, ei itse sivustolla.
+// Käynnistä ensin projektin HTTP-palvelin.
+
+// --- Riippuvuudet ja asetukset ---
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const output = process.env.SCREENSHOT_DIR || '/tmp/portfolio-check';
+
+const sivustonOsoite = process.env.SITE_URL || 'http://127.0.0.1:5500';
+const kuvakaappausKansio = process.env.SCREENSHOT_DIR || '/tmp/portfolio-check';
+const selainPolku = process.env.CHROMIUM_PATH || '/usr/bin/chromium';
+const testattavatLeveydet = [320, 360, 375, 390, 430, 768, 1024, 1440];
+const kosketusLeveydet = [320, 360, 375, 390, 430];
 
 (async () => {
-  fs.mkdirSync(output, { recursive: true });
-  const browser = await chromium.launch({
-    executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+  // --- Selaimen käynnistys ja virheiden kerääminen ---
+  fs.mkdirSync(kuvakaappausKansio, { recursive: true });
+
+  const selain = await chromium.launch({
+    executablePath: selainPolku,
     args: ['--no-sandbox'],
   });
+
   try {
-    const page = await browser.newPage();
-    const errors = [];
-    page.on('pageerror', error => errors.push(error.message));
-    page.on('console', message => {
-      if (message.type() === 'error') errors.push(message.text());
+    const sivu = await selain.newPage();
+    const virheet = [];
+
+    sivu.on('pageerror', (virhe) => virheet.push(virhe.message));
+    sivu.on('console', (viesti) => {
+      if (viesti.type() === 'error') virheet.push(viesti.text());
     });
-    page.on('requestfailed', request => errors.push(request.url()));
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    for (const width of [320, 360, 375, 390, 430, 768, 1024, 1440]) {
-      await page.setViewportSize({ width, height: 900 });
-      await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-      await page.evaluate(async () => {
-        for (const image of document.images) {
-          image.loading = 'eager';
-          await image.decode();
+    sivu.on('requestfailed', (pyynto) => virheet.push(pyynto.url()));
+
+    await sivu.emulateMedia({ reducedMotion: 'reduce' });
+
+    // --- Responsiivisuus, sisältö ja näppäimistökäyttö ---
+    for (const leveys of testattavatLeveydet) {
+      await sivu.setViewportSize({ width: leveys, height: 900 });
+      await sivu.goto(sivustonOsoite);
+
+      await sivu.evaluate(async () => {
+        for (const kuva of document.images) {
+          kuva.loading = 'eager';
+          await kuva.decode();
         }
-        await Promise.all([300, 400, 500, 600].map(weight =>
-          document.fonts.load(`${weight} 14px Poppins`)));
+
+        await Promise.all(
+          [300, 400, 500, 600].map((paino) => document.fonts.load(`${paino} 14px Poppins`)),
+        );
       });
-      assert(await page.evaluate(() => document.documentElement.scrollWidth === innerWidth), 'page overflow');
-      assert(await page.evaluate(() => [...document.images].every(image => image.naturalWidth && image.hasAttribute('alt'))), 'images');
-      assert(await page.evaluate(() => [...document.fonts].every(font => font.status === 'loaded')), 'fonts');
-      assert(await page.evaluate(() => [...document.querySelectorAll('.round-arrow')].every(element => {
-        const rect = element.getBoundingClientRect();
-        return Math.abs(rect.width - rect.height) < 1;
-      })), 'circle geometry');
-      assert(await page.evaluate(() => [...document.querySelectorAll('[data-count]')].every(el => el.textContent === el.dataset.count)), 'reduced motion final counters');
-      assert(await page.evaluate(() => [...document.images].every(el => el.hasAttribute('width') && el.hasAttribute('height'))), 'intrinsic image dimensions');
-      const track = page.locator('#showcase-track');
-      assert(await track.evaluate(el => el.scrollWidth > el.clientWidth), 'carousel overflow at every viewport');
-      await page.locator('.showcase-position').focus();
-      await page.keyboard.press('End');
-      await page.waitForTimeout(200);
-      assert(await track.evaluate(el => Math.abs(el.scrollLeft - (el.scrollWidth - el.clientWidth)) < 2), 'carousel keyboard end');
-      await page.keyboard.press('Home');
-      await page.waitForTimeout(200);
-      assert(await track.evaluate(el => el.scrollLeft < 2), 'carousel keyboard start');
-      await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-      await page.keyboard.press('Tab');
-      assert(await page.locator('.skip-link').evaluate(element => element === document.activeElement), 'first Tab');
-      await page.keyboard.press('Enter');
-      if (width < 701) {
-        assert((await page.locator('.offer h2').innerText()).includes('Get a Free'), 'hidden line break preserves offer word boundary');
-        assert((await page.locator('.contact p:not(.eyebrow)').innerText()).includes('collaborations. Let’s'), 'hidden line break preserves contact word boundary');
-        const menu = page.locator('.menu-toggle');
-        await menu.focus();
-        await page.keyboard.press('Enter');
-        assert.equal(await menu.getAttribute('aria-expanded'), 'true');
-        await page.keyboard.press('Escape');
-        assert.equal(await menu.getAttribute('aria-expanded'), 'false');
-        assert(await menu.evaluate(element => element === document.activeElement));
-        await page.keyboard.press('Enter');
-        await page.locator('#main-nav a').first().click();
-        assert(page.url().endsWith('#about'));
-        assert.equal(await menu.getAttribute('aria-expanded'), 'false');
+
+      assert(
+        await sivu.evaluate(() => document.documentElement.scrollWidth === innerWidth),
+        'Sivun sisältö ei saa ylittää näkymän leveyttä',
+      );
+      assert(
+        await sivu.evaluate(() =>
+          [...document.images].every((kuva) => kuva.naturalWidth && kuva.hasAttribute('alt')),
+        ),
+        'Kaikki kuvat latautuvat ja niillä on vaihtoehtoinen teksti',
+      );
+      assert(
+        await sivu.evaluate(() =>
+          [...document.fonts].every((fontti) => fontti.status === 'loaded'),
+        ),
+        'Kaikki fontit latautuvat',
+      );
+      assert(
+        await sivu.evaluate(() =>
+          [...document.querySelectorAll('.round-arrow')].every((elementti) => {
+            const rajaus = elementti.getBoundingClientRect();
+            return Math.abs(rajaus.width - rajaus.height) < 1;
+          }),
+        ),
+        'Nuolipainikkeiden muoto pysyy pyöreänä',
+      );
+      assert(
+        await sivu.evaluate(() =>
+          [...document.querySelectorAll('[data-count]')].every(
+            (elementti) => elementti.textContent === elementti.dataset.count,
+          ),
+        ),
+        'Reduced motion -tilassa laskurit näyttävät heti lopputuloksen',
+      );
+      assert(
+        await sivu.evaluate(() =>
+          [...document.images].every(
+            (kuva) => kuva.hasAttribute('width') && kuva.hasAttribute('height'),
+          ),
+        ),
+        'Kuville on määritelty mitat asettelun vakauttamiseksi',
+      );
+
+      const karuselli = sivu.locator('#showcase-track');
+      assert(
+        await karuselli.evaluate((elementti) => elementti.scrollWidth > elementti.clientWidth),
+        'Karusellin pitää olla vaakasuunnassa vieritettävä',
+      );
+
+      await sivu.locator('.showcase-position').focus();
+      await sivu.keyboard.press('End');
+      await sivu.waitForTimeout(200);
+      assert(
+        await karuselli.evaluate(
+          (elementti) =>
+            Math.abs(elementti.scrollLeft - (elementti.scrollWidth - elementti.clientWidth)) < 2,
+        ),
+        'End-näppäin siirtää karusellin loppuun',
+      );
+
+      await sivu.keyboard.press('Home');
+      await sivu.waitForTimeout(200);
+      assert(
+        await karuselli.evaluate((elementti) => elementti.scrollLeft < 2),
+        'Home-näppäin siirtää karusellin alkuun',
+      );
+
+      await sivu.goto(sivustonOsoite);
+      await sivu.keyboard.press('Tab');
+      assert(
+        await sivu
+          .locator('.skip-link')
+          .evaluate((elementti) => elementti === document.activeElement),
+        'Ohituslinkki on ensimmäinen näppäimistöllä kohdistettava elementti',
+      );
+      await sivu.keyboard.press('Enter');
+
+      if (leveys < 701) {
+        assert(
+          (await sivu.locator('.offer h2').innerText()).includes('Get a Free'),
+          'Tarjousosion rivinvaihto ei katkaise sanoja mobiilissa',
+        );
+        assert(
+          (await sivu.locator('.contact p:not(.eyebrow)').innerText()).includes(
+            'collaborations. Let’s',
+          ),
+          'Yhteystietojen rivinvaihto ei katkaise sanoja mobiilissa',
+        );
+
+        const valikkopainike = sivu.locator('.menu-toggle');
+        await valikkopainike.focus();
+        await sivu.keyboard.press('Enter');
+        assert.equal(await valikkopainike.getAttribute('aria-expanded'), 'true');
+
+        await sivu.keyboard.press('Escape');
+        assert.equal(await valikkopainike.getAttribute('aria-expanded'), 'false');
+        assert(
+          await valikkopainike.evaluate((elementti) => elementti === document.activeElement),
+          'Valikon sulkeminen palauttaa kohdistuksen painikkeeseen',
+        );
+
+        await sivu.keyboard.press('Enter');
+        await sivu.locator('#main-nav a').first().click();
+        assert(sivu.url().endsWith('#about'), 'Valikkolinkki vie oikeaan osioon');
+        assert.equal(await valikkopainike.getAttribute('aria-expanded'), 'false');
       }
-      for (let index = 0; index < 2; index++) {
-        await page.locator('.experience-item summary').nth(index).focus();
-        await page.keyboard.press('Enter');
-        await page.waitForTimeout(100);
-        assert.equal(await page.locator('.experience-item[open]').count(), 1);
+
+      for (let indeksi = 0; indeksi < 2; indeksi++) {
+        await sivu.locator('.experience-item summary').nth(indeksi).focus();
+        await sivu.keyboard.press('Enter');
+        await sivu.waitForTimeout(100);
+        assert.equal(
+          await sivu.locator('.experience-item[open]').count(),
+          1,
+          'Kerrallaan saa olla auki vain yksi työkokemusrivi',
+        );
       }
-      const more = page.locator('#more-button');
-      await more.focus();
-      assert.equal(await more.evaluate(element => getComputedStyle(element).outlineStyle), 'solid');
-      await page.keyboard.press('Enter');
-      assert(await page.locator('#more-projects').isVisible());
-      assert.equal(await more.getAttribute('aria-expanded'), 'true');
-      await page.keyboard.press('Enter');
-      assert(!(await page.locator('#more-projects').isVisible()));
-      assert.equal(await more.getAttribute('aria-expanded'), 'false');
-      await page.locator('.article-body summary').first().focus();
-      await page.keyboard.press('Enter');
-      assert.notEqual(await page.locator('.article-body details').first().getAttribute('open'), null);
-      await page.keyboard.press('Enter');
-      const label = page.locator('.portfolio-capsule > span').last();
-      const original = await label.textContent();
-      await label.evaluate(element => element.textContent = 'Portfolio and selected multidisciplinary design projects');
-      assert(await page.locator('.portfolio-capsule').evaluate(element => element.scrollWidth <= element.clientWidth + 2));
-      await label.evaluate((element, text) => element.textContent = text, original);
-      assert(await page.locator('.offer-copy').evaluate(el => {
-        const a = el.getBoundingClientRect();
-        const b = el.closest('.offer').getBoundingClientRect();
-        return a.top >= b.top && a.bottom <= b.bottom && a.width <= b.width;
-      }), 'offer content fits');
-      await page.evaluate(() => { document.activeElement.blur(); window.scrollTo(0, 0); });
-      await page.screenshot({ path: path.join(output, `page-${width}.png`), fullPage: true });
-      if ([390, 768, 1440].includes(width)) {
-        for (const section of ['home', 'about', 'experience', 'portfolio', 'blog']) {
-          await page.locator(`#${section}`).screenshot({ path: path.join(output, `${section}-${width}.png`) });
+
+      const lisaaPainike = sivu.locator('#more-button');
+      await lisaaPainike.focus();
+      assert.equal(
+        await lisaaPainike.evaluate((elementti) => getComputedStyle(elementti).outlineStyle),
+        'solid',
+        'Lisää-painikkeen kohdistus näkyy',
+      );
+      await sivu.keyboard.press('Enter');
+      assert(await sivu.locator('#more-projects').isVisible(), 'Lisäprojektit avautuvat');
+      assert.equal(await lisaaPainike.getAttribute('aria-expanded'), 'true');
+
+      await sivu.keyboard.press('Enter');
+      assert(!(await sivu.locator('#more-projects').isVisible()), 'Lisäprojektit sulkeutuvat');
+      assert.equal(await lisaaPainike.getAttribute('aria-expanded'), 'false');
+
+      await sivu.locator('.article-body summary').first().focus();
+      await sivu.keyboard.press('Enter');
+      assert.notEqual(
+        await sivu.locator('.article-body details').first().getAttribute('open'),
+        null,
+        'Artikkelin lisäsisältö avautuu näppäimistöllä',
+      );
+      await sivu.keyboard.press('Enter');
+
+      const kapselinOtsikko = sivu.locator('.portfolio-capsule > span').last();
+      const alkuperainenOtsikko = await kapselinOtsikko.textContent();
+      await kapselinOtsikko.evaluate(
+        (elementti) =>
+          (elementti.textContent = 'Portfolio and selected multidisciplinary design projects'),
+      );
+      assert(
+        await sivu
+          .locator('.portfolio-capsule')
+          .evaluate((elementti) => elementti.scrollWidth <= elementti.clientWidth + 2),
+        'Pitkä portfolion otsikko mahtuu kapseliin',
+      );
+      await kapselinOtsikko.evaluate(
+        (elementti, teksti) => (elementti.textContent = teksti),
+        alkuperainenOtsikko,
+      );
+
+      assert(
+        await sivu.locator('.offer-copy').evaluate((elementti) => {
+          const sisalto = elementti.getBoundingClientRect();
+          const osio = elementti.closest('.offer').getBoundingClientRect();
+          return (
+            sisalto.top >= osio.top && sisalto.bottom <= osio.bottom && sisalto.width <= osio.width
+          );
+        }),
+        'Tarjousosion sisältö pysyy osionsa sisällä',
+      );
+
+      await sivu.evaluate(() => {
+        document.activeElement.blur();
+        window.scrollTo(0, 0);
+      });
+      await sivu.screenshot({
+        path: path.join(kuvakaappausKansio, `page-${leveys}.png`),
+        fullPage: true,
+      });
+
+      if ([390, 768, 1440].includes(leveys)) {
+        for (const osio of ['home', 'about', 'experience', 'portfolio', 'blog']) {
+          await sivu.locator(`#${osio}`).screenshot({
+            path: path.join(kuvakaappausKansio, `${osio}-${leveys}.png`),
+          });
         }
       }
-      if ([390, 1440].includes(width)) {
-        await page.locator('#showcase-track').evaluate(el => el.scrollTo({ left: innerWidth > 700 ? (el.scrollWidth - el.clientWidth) / 2 : 0, behavior: 'instant' }));
-        await page.waitForTimeout(100);
-        await page.locator('.showcase').screenshot({ path: path.join(output, `showcase-${width}.png`) });
-        await page.locator('.offer').screenshot({ path: path.join(output, `offer-${width}.png`) });
+
+      if ([390, 1440].includes(leveys)) {
+        await sivu.locator('#showcase-track').evaluate((elementti) =>
+          elementti.scrollTo({
+            left: innerWidth > 700 ? (elementti.scrollWidth - elementti.clientWidth) / 2 : 0,
+            behavior: 'instant',
+          }),
+        );
+        await sivu.waitForTimeout(100);
+        await sivu.locator('.showcase').screenshot({
+          path: path.join(kuvakaappausKansio, `showcase-${leveys}.png`),
+        });
+        await sivu.locator('.offer').screenshot({
+          path: path.join(kuvakaappausKansio, `offer-${leveys}.png`),
+        });
       }
-      console.log(`${width}px: PASS`);
+
+      console.log(`${leveys}px: PASS`);
     }
-    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'auto');
-    // Exercise motion separately from the responsive reduced-motion pass.
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-    await page.waitForTimeout(100);
-    assert(await page.locator('[data-count="200"]').textContent() !== '200', 'counter animates');
-    await page.waitForTimeout(1600);
-    assert.equal(await page.locator('[data-count="200"]').textContent(), '200');
-    assert.equal(await page.locator('[data-count="50"]').textContent(), '50');
-    await page.mouse.move(1150, 350);
-    await page.waitForTimeout(250);
-    assert(await page.locator('.hero').evaluate(el => parseFloat(el.style.getPropertyValue('--portrait-x')) !== 0), 'parallax moves');
-    await page.mouse.move(10, 10);
-    await page.waitForTimeout(250);
-    assert.equal(await page.locator('.hero').evaluate(el => el.style.getPropertyValue('--portrait-x')), '0px');
-    await page.mouse.move(1150, 350);
-    await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.waitForTimeout(100);
-    assert.equal(await page.locator('.hero').evaluate(el => el.style.getPropertyValue('--portrait-x')), '0px');
-    assert.equal(await page.locator('.hero h1').evaluate(el => getComputedStyle(el).animationName), 'none');
-    const track = page.locator('#showcase-track');
-    await track.scrollIntoViewIfNeeded();
-    await track.evaluate(el => { el.style.scrollSnapType = 'none'; el.scrollTo({ left: 40, behavior: 'instant' }); });
-    await track.hover();
-    const beforeWheel = await track.evaluate(el => el.scrollLeft);
-    await page.mouse.wheel(0, 120);
-    await page.waitForTimeout(80);
-    assert(await track.evaluate(el => el.scrollLeft) > beforeWheel, 'vertical wheel moves carousel');
-    await page.waitForTimeout(300);
-    const beforeHorizontal = await track.evaluate(el => el.scrollLeft);
-    await page.mouse.wheel(100, 0);
-    await page.waitForTimeout(100);
-    assert(await track.evaluate(el => el.scrollLeft) > beforeHorizontal, 'native horizontal wheel');
-    await page.waitForTimeout(200);
-    await track.evaluate(el => el.scrollTo({ left: el.scrollWidth, behavior: 'instant' }));
-    await page.waitForTimeout(100);
-    const beforeY = await page.evaluate(() => scrollY);
-    await page.mouse.wheel(0, 200);
-    await page.waitForTimeout(200);
-    assert(await page.evaluate(() => scrollY) > beforeY, 'right edge releases page scroll');
-    await track.evaluate(el => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
-    await track.evaluate(el => { el.style.scrollSnapType = 'none'; el.scrollTo({ left: 0, behavior: 'instant' }); });
-    await track.hover();
-    await page.waitForTimeout(800);
-    assert(await track.evaluate(el => el.scrollLeft < 2), 'at left boundary');
-    const edgeY = await page.evaluate(() => scrollY);
-    // Chromium can retain its native horizontal scroll latch for the first tick
-    // after an artificial jump from the opposite edge. Boundary events must stay
-    // uncancelled and the page must resume scrolling within this short gesture.
-    await track.evaluate(el => {
-      window.boundaryWheelCancelled = [];
-      el.addEventListener('wheel', event => {
-        window.boundaryWheelCancelled.push(event.defaultPrevented);
-      }, { passive: true });
+
+    // --- Liikeanimaatiot ja hiiren vierityksen toiminta ---
+    assert.equal(
+      await sivu.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior),
+      'auto',
+      'Reduced motion -tilassa sivun vieritys ei ole animoitu',
+    );
+
+    await sivu.setViewportSize({ width: 1440, height: 900 });
+    await sivu.emulateMedia({ reducedMotion: 'no-preference' });
+    await sivu.goto(sivustonOsoite);
+    await sivu.waitForTimeout(100);
+
+    assert(
+      (await sivu.locator('[data-count="200"]').textContent()) !== '200',
+      'Laskuri alkaa animoitua',
+    );
+    await sivu.waitForTimeout(1600);
+    assert.equal(await sivu.locator('[data-count="200"]').textContent(), '200');
+    assert.equal(await sivu.locator('[data-count="50"]').textContent(), '50');
+
+    await sivu.mouse.move(1150, 350);
+    await sivu.waitForTimeout(250);
+    assert(
+      await sivu
+        .locator('.hero')
+        .evaluate(
+          (elementti) => parseFloat(elementti.style.getPropertyValue('--portrait-x')) !== 0,
+        ),
+      'Hero-kuva liikkuu osoittimen mukana',
+    );
+
+    await sivu.mouse.move(10, 10);
+    await sivu.waitForTimeout(250);
+    assert.equal(
+      await sivu
+        .locator('.hero')
+        .evaluate((elementti) => elementti.style.getPropertyValue('--portrait-x')),
+      '0px',
+      'Hero-kuva palaa lähtökohtaansa osoittimen poistuessa',
+    );
+
+    await sivu.mouse.move(1150, 350);
+    await sivu.emulateMedia({ reducedMotion: 'reduce' });
+    await sivu.waitForTimeout(100);
+    assert.equal(
+      await sivu
+        .locator('.hero')
+        .evaluate((elementti) => elementti.style.getPropertyValue('--portrait-x')),
+      '0px',
+      'Reduced motion poistaa hero-kuvan liikkeen',
+    );
+    assert.equal(
+      await sivu
+        .locator('.hero h1')
+        .evaluate((elementti) => getComputedStyle(elementti).animationName),
+      'none',
+      'Reduced motion poistaa otsikon animaation',
+    );
+
+    const karuselli = sivu.locator('#showcase-track');
+    await karuselli.scrollIntoViewIfNeeded();
+    await karuselli.evaluate((elementti) => {
+      elementti.style.scrollSnapType = 'none';
+      elementti.scrollTo({ left: 40, behavior: 'instant' });
     });
-    for (let tick = 0; tick < 3 && await page.evaluate(() => scrollY) >= edgeY; tick++) {
-      await page.mouse.wheel(0, -150);
-      await page.waitForTimeout(250);
+    await karuselli.hover();
+
+    // Ensimmäisen kahden sekunnin aikana pystyrulla vierittää sivua, ei karusellia.
+    const alkuSivuVieritys = await sivu.evaluate(() => scrollY);
+    const alkuKaruselliVieritys = await karuselli.evaluate((elementti) => elementti.scrollLeft);
+    await sivu.mouse.wheel(0, 120);
+    await sivu.waitForTimeout(100);
+    assert(
+      await karuselli.evaluate(
+        (elementti, alku) => Math.abs(elementti.scrollLeft - alku) < 2,
+        alkuKaruselliVieritys,
+      ),
+      'Karuselli ei kaappaa pystyrullausta ennen viiveen päättymistä',
+    );
+    assert(
+      (await sivu.evaluate(() => scrollY)) > alkuSivuVieritys,
+      'Sivu vierii normaalisti karusellin viiveen aikana',
+    );
+
+    await sivu.waitForTimeout(2100);
+    const ennenKarusellivieritysta = await karuselli.evaluate((elementti) => elementti.scrollLeft);
+    await sivu.mouse.wheel(0, 120);
+    await sivu.waitForTimeout(100);
+    assert(
+      (await karuselli.evaluate((elementti) => elementti.scrollLeft)) > ennenKarusellivieritysta,
+      'Pystyrulla siirtää karusellia viiveen jälkeen',
+    );
+
+    await sivu.waitForTimeout(300);
+    const ennenVaakarullausta = await karuselli.evaluate((elementti) => elementti.scrollLeft);
+    await sivu.mouse.wheel(100, 0);
+    await sivu.waitForTimeout(100);
+    assert(
+      (await karuselli.evaluate((elementti) => elementti.scrollLeft)) > ennenVaakarullausta,
+      'Kosketuslevyn vaakarullaus toimii natiivisti',
+    );
+
+    await sivu.waitForTimeout(200);
+    await karuselli.evaluate((elementti) =>
+      elementti.scrollTo({ left: elementti.scrollWidth, behavior: 'instant' }),
+    );
+    await sivu.waitForTimeout(100);
+    const sivunVieritysOikeassaReunassa = await sivu.evaluate(() => scrollY);
+    await sivu.mouse.wheel(0, 200);
+    await sivu.waitForTimeout(200);
+    assert(
+      (await sivu.evaluate(() => scrollY)) > sivunVieritysOikeassaReunassa,
+      'Sivun pystyrullaus jatkuu karusellin oikeassa reunassa',
+    );
+
+    await karuselli.evaluate((elementti) =>
+      elementti.scrollIntoView({ block: 'center', behavior: 'instant' }),
+    );
+    await karuselli.evaluate((elementti) => {
+      elementti.style.scrollSnapType = 'none';
+      elementti.scrollTo({ left: 0, behavior: 'instant' });
+    });
+    await karuselli.hover();
+    await sivu.waitForTimeout(800);
+    assert(
+      await karuselli.evaluate((elementti) => elementti.scrollLeft < 2),
+      'Karuselli on vasemmassa reunassa',
+    );
+
+    const sivunVieritysVasemmassaReunassa = await sivu.evaluate(() => scrollY);
+    await karuselli.evaluate((elementti) => {
+      window.peruutetutReunatapahtumat = [];
+      elementti.addEventListener(
+        'wheel',
+        (tapahtuma) => {
+          window.peruutetutReunatapahtumat.push(tapahtuma.defaultPrevented);
+        },
+        { passive: true },
+      );
+    });
+
+    // Chromium voi jättää keinotekoisen siirron jälkeen vaakarullauksen hetkeksi päälle.
+    for (
+      let askel = 0;
+      askel < 3 && (await sivu.evaluate(() => scrollY)) >= sivunVieritysVasemmassaReunassa;
+      askel++
+    ) {
+      await sivu.mouse.wheel(0, -150);
+      await sivu.waitForTimeout(250);
     }
-    assert(await page.evaluate(() => window.boundaryWheelCancelled.every(cancelled => !cancelled)), 'left boundary does not cancel native scrolling');
-    assert(await page.evaluate(() => scrollY) < edgeY, 'left edge releases page scroll');
-    await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await page.locator('.article-card').first().hover();
-    await page.waitForTimeout(250);
-    assert(await page.locator('.article-card').first().evaluate(el => getComputedStyle(el).transform !== 'none'), 'whole article hover');
-    await page.locator('.hero').scrollIntoViewIfNeeded();
-    assert.equal(await page.locator('[data-count="200"]').textContent(), '200', 'counter does not restart on re-entry');
-    const noJS = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 900 } });
-    const plain = await noJS.newPage();
-    await plain.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-    assert.equal(await plain.locator('[data-count="200"]').textContent(), '200');
-    assert(await plain.locator('h1').isVisible());
-    assert(await plain.locator('.showcase-grid').evaluate(el => el.scrollWidth > el.clientWidth));
-    await plain.locator('.article-body summary').first().click();
-    assert.notEqual(await plain.locator('.article-body details').first().getAttribute('open'), null);
-    await noJS.close();
-    // Aitoja selainmoottorin kosketustapahtumia: ei scrollLeft-arvon simulointia.
-    for (const width of [320, 360, 375, 390, 430]) {
-      const touch = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width, height: 844 } });
-      const mobile = await touch.newPage();
-      mobile.on('pageerror', error => errors.push(error.message));
-      mobile.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-      await mobile.emulateMedia({ reducedMotion: 'reduce' });
-      await mobile.goto(process.env.SITE_URL || 'http://127.0.0.1:5500');
-      assert.equal(await mobile.locator('.hero').evaluate(el => getComputedStyle(el).getPropertyValue('--portrait-x').trim()), '');
-      assert(await mobile.evaluate(() => document.documentElement.scrollWidth === innerWidth), 'touch viewport overflow');
-      assert(await mobile.locator('.hero-portrait').evaluate(el => {
-        const copy = document.querySelector('.hero-copy').getBoundingClientRect();
-        return el.getBoundingClientRect().top >= copy.bottom;
-      }), 'mobile portrait follows copy without overlap');
-      for (const selector of ['.brand', '.menu-toggle', '.header-cta']) {
-        const rect = await mobile.locator(selector).boundingBox();
-        assert(rect.width >= 44 && rect.height >= 44, 'header touch target');
+
+    assert(
+      await sivu.evaluate(() =>
+        window.peruutetutReunatapahtumat.every((peruutettu) => !peruutettu),
+      ),
+      'Vasemman reunan rullaustapahtumia ei estetä',
+    );
+    assert(
+      (await sivu.evaluate(() => scrollY)) < sivunVieritysVasemmassaReunassa,
+      'Sivun pystyrullaus jatkuu karusellin vasemmassa reunassa',
+    );
+
+    await sivu.emulateMedia({ reducedMotion: 'no-preference' });
+    await sivu.locator('.article-card').first().hover();
+    await sivu.waitForTimeout(250);
+    assert(
+      await sivu
+        .locator('.article-card')
+        .first()
+        .evaluate((elementti) => getComputedStyle(elementti).transform !== 'none'),
+      'Artikkelikortti korostuu osoittimen ollessa sen päällä',
+    );
+
+    await sivu.locator('.hero').scrollIntoViewIfNeeded();
+    assert.equal(
+      await sivu.locator('[data-count="200"]').textContent(),
+      '200',
+      'Laskuri ei käynnisty uudelleen osioon palattaessa',
+    );
+
+    // --- Toiminta ilman JavaScriptiä ---
+    const ilmanJavaScriptia = await selain.newContext({
+      javaScriptEnabled: false,
+      viewport: { width: 390, height: 900 },
+    });
+    const staattinenSivu = await ilmanJavaScriptia.newPage();
+
+    await staattinenSivu.goto(sivustonOsoite);
+    assert.equal(await staattinenSivu.locator('[data-count="200"]').textContent(), '200');
+    assert(await staattinenSivu.locator('h1').isVisible(), 'Pääotsikko näkyy ilman JavaScriptiä');
+    assert(
+      await staattinenSivu
+        .locator('.showcase-grid')
+        .evaluate((elementti) => elementti.scrollWidth > elementti.clientWidth),
+      'Showcasea voi vierittää ilman JavaScriptiä',
+    );
+    await staattinenSivu.locator('.article-body summary').first().click();
+    assert.notEqual(
+      await staattinenSivu.locator('.article-body details').first().getAttribute('open'),
+      null,
+      'Artikkelin lisäsisältö toimii ilman JavaScriptiä',
+    );
+    await ilmanJavaScriptia.close();
+
+    // --- Kosketusnäytöt, mobiilivalikko ja natiivi pyyhkäisy ---
+    for (const leveys of kosketusLeveydet) {
+      const kosketuskonteksti = await selain.newContext({
+        hasTouch: true,
+        isMobile: true,
+        viewport: { width: leveys, height: 844 },
+      });
+      const mobiilisivu = await kosketuskonteksti.newPage();
+
+      mobiilisivu.on('pageerror', (virhe) => virheet.push(virhe.message));
+      mobiilisivu.on('console', (viesti) => {
+        if (viesti.type() === 'error') virheet.push(viesti.text());
+      });
+
+      await mobiilisivu.emulateMedia({ reducedMotion: 'reduce' });
+      await mobiilisivu.goto(sivustonOsoite);
+
+      assert.equal(
+        await mobiilisivu
+          .locator('.hero')
+          .evaluate((elementti) =>
+            getComputedStyle(elementti).getPropertyValue('--portrait-x').trim(),
+          ),
+        '',
+        'Hero-kuvassa ei ole parallax-liikettä kosketusnäytöllä',
+      );
+      assert(
+        await mobiilisivu.evaluate(() => document.documentElement.scrollWidth === innerWidth),
+        'Sivun sisältö ei ylitä kosketusnäytön leveyttä',
+      );
+      assert(
+        await mobiilisivu.locator('.hero-portrait').evaluate((elementti) => {
+          const teksti = document.querySelector('.hero-copy').getBoundingClientRect();
+          return elementti.getBoundingClientRect().top >= teksti.bottom;
+        }),
+        'Hero-kuva sijoittuu mobiilissa tekstin alle',
+      );
+
+      for (const valitsin of ['.brand', '.menu-toggle', '.header-cta']) {
+        const rajaus = await mobiilisivu.locator(valitsin).boundingBox();
+        assert(
+          rajaus.width >= 44 && rajaus.height >= 44,
+          'Mobiilin painikkeen kosketusalue on vähintään 44 × 44 pikseliä',
+        );
       }
-      await mobile.locator('.menu-toggle').tap();
-      assert.equal(await mobile.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
-      await mobile.locator('#main-nav a').first().tap();
-      assert.equal(await mobile.locator('.menu-toggle').getAttribute('aria-expanded'), 'false');
-      const slider = mobile.locator('#showcase-track');
-      await slider.scrollIntoViewIfNeeded();
-      const rect = await slider.boundingBox();
-      const y = Math.max(20, Math.min(700, rect.y + 100));
-      const cdp = await touch.newCDPSession(mobile);
-      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: width * .8, y }] });
-      for (let step = 1; step <= 12; step++) {
-        await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: width * (.8 - .6 * step / 12), y }] });
-        await mobile.waitForTimeout(20);
+
+      await mobiilisivu.locator('.menu-toggle').tap();
+      assert.equal(await mobiilisivu.locator('.menu-toggle').getAttribute('aria-expanded'), 'true');
+      await mobiilisivu.locator('#main-nav a').first().tap();
+      assert.equal(
+        await mobiilisivu.locator('.menu-toggle').getAttribute('aria-expanded'),
+        'false',
+      );
+
+      const karuselli = mobiilisivu.locator('#showcase-track');
+      await karuselli.scrollIntoViewIfNeeded();
+      const rajaus = await karuselli.boundingBox();
+      const y = Math.max(20, Math.min(700, rajaus.y + 100));
+      const debugYhteys = await kosketuskonteksti.newCDPSession(mobiilisivu);
+
+      await debugYhteys.send('Input.dispatchTouchEvent', {
+        type: 'touchStart',
+        touchPoints: [{ x: leveys * 0.8, y }],
+      });
+
+      for (let askel = 1; askel <= 12; askel++) {
+        await debugYhteys.send('Input.dispatchTouchEvent', {
+          type: 'touchMove',
+          touchPoints: [{ x: leveys * (0.8 - (0.6 * askel) / 12), y }],
+        });
+        await mobiilisivu.waitForTimeout(20);
       }
-      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-      await mobile.waitForTimeout(400);
-      assert(await slider.evaluate(el => el.scrollLeft > 30), 'native swipe moves carousel');
-      assert(await mobile.locator('.showcase .project-caption').evaluateAll(elements => elements.every(el => el.scrollWidth <= el.clientWidth + 1)), 'carousel captions and logos fit cards');
-      await mobile.locator('.experience-item summary').first().tap();
-      await mobile.waitForFunction(() => document.querySelectorAll('.experience-item[open]').length === 1);
-      assert.equal(await mobile.locator('.experience-item[open]').count(), 1);
-      assert(await mobile.locator('.experience-item').first().locator('.job').isVisible(), 'mobile job role visible');
-      await mobile.locator('.article-body summary').first().tap();
-      assert.notEqual(await mobile.locator('.article-body details').first().getAttribute('open'), null);
-      assert.equal(await mobile.locator('[data-count="200"]').textContent(), '200');
-      const icon = await mobile.request.get(new URL('/assets/logo.webp', mobile.url()).href);
-      assert.equal(icon.status(), 200, 'favicon/logo loads');
-      await touch.close();
-      console.log(`${width}px touch/swipe: PASS`);
+
+      await debugYhteys.send('Input.dispatchTouchEvent', {
+        type: 'touchEnd',
+        touchPoints: [],
+      });
+      await mobiilisivu.waitForTimeout(400);
+
+      assert(
+        await karuselli.evaluate((elementti) => elementti.scrollLeft > 30),
+        'Natiivi kosketuspyyhkäisy siirtää karusellia',
+      );
+      assert(
+        await mobiilisivu
+          .locator('.showcase .project-caption')
+          .evaluateAll((elementit) =>
+            elementit.every((elementti) => elementti.scrollWidth <= elementti.clientWidth + 1),
+          ),
+        'Projektikorttien otsikot ja logot mahtuvat mobiilissa',
+      );
+
+      await mobiilisivu.locator('.experience-item summary').first().tap();
+      await mobiilisivu.waitForFunction(
+        () => document.querySelectorAll('.experience-item[open]').length === 1,
+      );
+      assert.equal(await mobiilisivu.locator('.experience-item[open]').count(), 1);
+      assert(
+        await mobiilisivu.locator('.experience-item').first().locator('.job').isVisible(),
+        'Työrooli näkyy mobiilissa',
+      );
+
+      await mobiilisivu.locator('.article-body summary').first().tap();
+      assert.notEqual(
+        await mobiilisivu.locator('.article-body details').first().getAttribute('open'),
+        null,
+        'Artikkelin lisäsisältö avautuu kosketuksella',
+      );
+      assert.equal(await mobiilisivu.locator('[data-count="200"]').textContent(), '200');
+
+      const kuvake = await mobiilisivu.request.get(
+        new URL('/assets/logo.webp', mobiilisivu.url()).href,
+      );
+      assert.equal(kuvake.status(), 200, 'Sivuston kuvake latautuu');
+
+      await kosketuskonteksti.close();
+      console.log(`${leveys}px kosketus/pyyhkäisy: PASS`);
     }
-    assert.deepEqual(errors, []);
-    console.log('Fonts, images, keyboard, menu, accordion, View More, capsule, motion, carousel, wheel boundaries and console: PASS');
+
+    // --- Testin yhteenveto ---
+    assert.deepEqual(virheet, [], 'Sivulla ei saa olla JavaScript-, konsoli- tai verkkovirheitä');
+    console.log(
+      'Fontit, kuvat, näppäimistö, valikko, accordion, projektit, liike, karuselli, kosketus ja konsoli: PASS',
+    );
   } finally {
-    await browser.close();
+    await selain.close();
   }
-})().catch(error => { console.error(error); process.exitCode = 1; });
+})().catch((virhe) => {
+  console.error(virhe);
+  process.exitCode = 1;
+});

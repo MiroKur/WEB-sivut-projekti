@@ -961,9 +961,24 @@ a:hover .round-arrow {
   font-size: 13px;
 }
 .footer {
-  background: linear-gradient(90deg, transparent 63%, rgba(255, 255, 255, 0.19) 63%, rgba(255, 255, 255, 0.19) 65%, transparent 65%) left bottom / 240px auto no-repeat, linear-gradient(0deg, transparent 63%, rgba(255, 255, 255, 0.19) 63%, rgba(255, 255, 255, 0.19) 65%, transparent 65%) rgb(32, 32, 32);
+  position: relative;
+  background: rgb(32, 32, 32);
   color: white;
   padding: 56px 0px 26px;
+}
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))
+      clamp(44px, 7.2vw, 144px) 0 / 1px 100% no-repeat,
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16))
+      clamp(44px, 7.2vw, 144px) 36% / calc(100% - clamp(44px, 7.2vw, 144px)) 1px no-repeat;
+}
+.footer > .container {
+  position: relative;
 }
 .footer-top {
   display: flex;
